@@ -1,0 +1,89 @@
+doctype html
+
+html lang="en"
+  head
+    meta charset="utf-8"
+    meta http-equiv="X-UA-Compatible" content="IE=edge"
+    meta name="viewport" content="width=device-width, initial-scale=1"
+    / The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags
+    meta name="turbolinks-cache-control" content="no-cache"
+    title
+      = t(:brand)
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+
+  body
+    nav class="navbar no-rounded-corners navbar-inverse"
+      div class="container-fluid"
+        div class="navbar-header"
+          button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"
+            span class="sr-only"
+              | Toggle navigation
+            span class="icon-bar"
+            span class="icon-bar"
+            span class="icon-bar"
+          a class="navbar-brand" href="#"
+            = t(:brand)
+        div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1"
+          ul class="nav navbar-nav"
+            - if user_signed_in?
+              - if current_user.administrator?
+                li class="dropdown"
+                  a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                    = t(:settings)
+                    span class="caret"
+                  ul class="dropdown-menu"
+                    li
+                      = link_to t(:connections), connections_path
+                    li
+                      = link_to t(:ports), ports_path
+                    li
+                      = link_to t(:locations), locations_path
+                    li role="separator" class="divider"
+                    li
+                      = link_to t(:users), users_path
+                li
+                  = link_to t(:administrators), root_path
+              - if current_user.engineer? || current_user.administrator?
+                li
+                  = link_to t(:engineers), locations_path
+              - if current_user.security? || current_user.administrator?
+                li
+                  = link_to t(:securities), locations_path
+          ul class="nav navbar-nav navbar-right"
+            - if user_signed_in?
+              li
+                = link_to t(:exit), destroy_user_session_path, method: :delete
+
+    div id="flash"
+      - flash.each do |name, msg|
+        - if name != "timedout"
+          = content_tag :div, class: "alert alert-#{ name == 'error' ? "danger" : "success" } alert-dismissable", role: "alert" do
+            button.close type="button" data-dismiss="alert"
+              span aria-hidden="true"
+                | &times;
+              span.sr-only
+                | Close
+            - if msg.kind_of?(Array)
+              - msg.each do |x|
+                = x
+                br
+            - else
+              = msg
+
+    div class='main-wrapper'
+      = yield
+
+    footer class='main-footer'
+      div class='footer-created-by'
+        | Created by profy 2016
+
+
+
+script
+  | $(document).ready(function(){
+  |  setTimeout(function(){
+  |    $('#flash').hide();
+  |  }, 5000);
+  | });

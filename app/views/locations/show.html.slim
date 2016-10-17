@@ -1,0 +1,23 @@
+- if not @location.blank?
+  .panel.panel-default.location_show_size
+    .panel-heading
+      h3.panel-title
+        b = t(:location)
+    .panel-body
+      dl
+        dt
+          = t(:location_name)
+        br
+        dd
+          = @location.name
+        br
+        dt
+          = t(:location_description)
+        br
+        dd
+          = @location.description
+        br
+        = link_to t(:locations), locations_path
+        = ' | '
+        = link_to t(:edit), edit_location_path(@location)
+

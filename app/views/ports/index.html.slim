@@ -1,0 +1,53 @@
+= link_to new_port_path, class: 'btn btn-primary' do
+  span.glyphicon.glyphicon-plus
+  = t(:create_port)
+br
+br
+
+
+.table-responsive
+  table.table.table-striped.table-bordered.table-hover
+    thead
+      tr
+        th
+          = t(:port_name)
+        th
+          = t(:port_order)
+        th
+          = t(:port_number)
+        th
+          = t(:port_type)
+        th
+          = t(:port_location)
+        th
+          = t(:port_connection)
+        th
+          = t(:port_description)
+        th
+        th
+        th
+    tbody
+      - @ports.each do |port|
+        tr
+          td
+            = port.name
+          td
+            = port.order_index
+          td
+            = port.port_number
+          td
+            = port.port_type
+          td
+            = port.try(:location).try(:name)
+          td
+            = port.try(:connection).try(:name)
+          td
+            = port.description
+          td
+            = link_to t(:show), port
+          td
+            = link_to t(:edit), edit_port_path(port)
+          td
+            = link_to t(:delete), port, data: { confirm: t(:delete_confirmation) }, method: :delete
+
+

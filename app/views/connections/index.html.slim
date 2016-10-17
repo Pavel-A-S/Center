@@ -1,0 +1,53 @@
+= link_to new_connection_path, class: 'btn btn-primary' do
+  span.glyphicon.glyphicon-plus
+  = t(:create_connection)
+br
+br
+
+
+.table-responsive
+  table.table.table-striped.table-bordered.table-hover
+    thead
+      tr
+        th
+          = t(:connection_name)
+        th
+          = t(:connection_login)
+        th
+          = t(:connection_identifier)
+        th
+          = t(:connection_description)
+        th
+          = t(:connection_frequency)
+        th
+          = t(:connection_time_out)
+        th
+          = t(:connection_update_me)
+        th
+        th
+        th
+    tbody
+      - @connections.each do |connection|
+        tr
+          td
+            = connection.name
+          td
+            = connection.login
+          td
+            = connection.identifier
+          td
+            = connection.description
+          td
+            = connection.frequency
+          td
+            = connection.time_out
+          td
+            = connection.update_me
+          td
+            = link_to t(:show), connection
+          td
+            = link_to t(:edit), edit_connection_path(connection)
+          td
+            = link_to t(:delete), connection, data: { confirm: t(:delete_confirmation) }, method: :delete
+
+

@@ -1,0 +1,63 @@
+ru:
+  activerecord:
+    attributes:
+      user: 
+        name: "Имя"
+        email: "Почта"
+        password: "Пароль"
+        password_confirmation: "Подтверждение пароля"
+
+    errors:
+      models:
+        user:
+          attributes:
+            name:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 48 символов максимум"
+            email:
+              blank: "- нужно указать."
+              too_long: "- очень длинный."
+              invalid: "- что-то с ней не так."
+              taken: "- уже существует в системе."
+            password:
+              blank: "- нужно указать."
+              too_short:
+                other: "- должно быть не меньше 8 символов."
+            password_confirmation:
+              confirmation: "- должно совпадать с паролем."
+
+      messages:
+        record_invalid: "данные не прошли валидацию"
+en:
+  activerecord:
+    attributes:
+      user: 
+        name: "Name"
+        email: "Email"
+        password: "Password"
+        password_confirmation: "Password confirmation"
+
+    errors:
+      models:
+        user:
+          attributes:
+            name:
+              blank: "must be present."
+              too_long:
+                other: "too long - 48 symbols maximum."
+            email:
+              blank: "must be present."
+              too_long: "unnecessarily long."
+              invalid: "looks wrong!"
+              taken: "- has been registered before."
+            password:
+              blank: "must be present."
+              too_short:
+                other: "must not be less than 8 symbols."
+            password_confirmation:
+              confirmation: "wrong."
+
+          messages:
+            record_invalid: "data isn't valid"
+

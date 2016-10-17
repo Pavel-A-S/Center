@@ -1,0 +1,22 @@
+div class="wrapper_for_sensors" id="location_#{@location.id}"
+
+  = render partial: 'port_templates',
+            locals: { ports_parameters: @ports_parameters }
+
+
+
+
+
+
+
+
+
+script
+  | $('#location_#{@location.id}').on('click', function(e) {
+  |   trigger('#{@ports_parameters.to_json.html_safe}',
+  |           '#{command_handler_path}',
+  |           e);
+  | });
+  |
+  | $(getData('#{@ports_parameters.to_json.html_safe}',
+  |           '#{command_handler_path}'));

@@ -1,0 +1,58 @@
+- if not @connection.blank?
+  .panel.panel-default.connection_show_size
+    .panel-heading
+      h3.panel-title
+        b = t(:connection)
+    .panel-body
+      dl
+        dt
+          = t(:connection_name)
+        br
+        dd
+          = @connection.name
+        br
+        dt
+          = t(:connection_login)
+        br
+        dd
+          = @connection.login
+        br
+        dt
+          = t(:connection_password)
+        br
+        dd
+          = @connection.password
+        br
+        dt
+          = t(:connection_identifier)
+        br
+        dd
+          = @connection.identifier
+        br
+        dt
+          = t(:connection_description)
+        br
+        dd
+          = @connection.description
+        br
+        dt
+          = t(:connection_frequency)
+        br
+        dd
+          = @connection.frequency
+        br
+        dt
+          = t(:connection_time_out)
+        br
+        dd
+          = @connection.time_out
+        br
+        dt
+          = t(:connection_update_me)
+        br
+        dd
+          = @connection.update_me
+        br
+        = link_to t(:connections), connections_path
+        = ' | '
+        = link_to t(:edit), edit_connection_path(@connection)

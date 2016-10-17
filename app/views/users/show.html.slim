@@ -1,0 +1,29 @@
+- if not @user.blank?
+  .panel.panel-default
+    .panel-heading
+      h3.panel-title
+        b = t(:user)
+    .panel-body
+      dl
+        dt
+          = t(:user_email)
+        br
+        dd
+          = @user.email
+        br
+        dt
+          = t(:user_name)
+        br
+        dd
+          = @user.name
+        br
+        dt
+          = t(:user_role)
+        br
+        dd
+          = @user.role
+        br
+        = link_to t(:users), users_path
+        = ' | '
+        = link_to t(:edit), edit_user_path(@user)
+

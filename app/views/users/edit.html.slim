@@ -1,0 +1,9 @@
+- if not @user.blank?
+  .user_form_wrapper
+    h3 = t(:editing_user)
+    br
+    == render 'form'
+    br
+    = link_to t(:show), @user
+    = " | "
+    = link_to t(:back), users_path

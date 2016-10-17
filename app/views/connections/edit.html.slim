@@ -1,0 +1,9 @@
+- if not @connection.blank?
+  .connection_form_wrapper
+    h3 = t(:editing_connection)
+    br
+    == render 'form'
+    br
+    = link_to t(:show), @connection
+    = " | "
+    = link_to t(:back), connections_path

@@ -1,0 +1,30 @@
+= link_to new_location_path, class: 'btn btn-primary' do
+  span.glyphicon.glyphicon-plus
+  = t(:create_location)
+br
+br
+
+.table-responsive
+  table.table.table-striped.table-bordered.table-hover
+    thead
+      tr
+        th
+          = t(:location_name)
+        th
+          = t(:location_description)
+        th
+        th
+        th
+    tbody
+      - @locations.each do |location|
+        tr
+          td
+            = link_to location.name, page_location_path(location)
+          td
+            = location.description
+          td
+            = link_to t(:show), location
+          td
+            = link_to t(:edit), edit_location_path(location)
+          td
+            = link_to t(:delete), location, data: { confirm: t(:delete_confirmation) }, method: :delete

@@ -1,0 +1,16 @@
+- if not @location.blank?
+  = form_for @location do |f|
+    - if @location.errors.any?
+      #error_explanation
+        h2 = "#{t(:you_have_errors)}: #{@location.errors.count}"
+        ul
+          - @location.errors.full_messages.each do |message|
+            li = message
+    .form-group
+      = f.label :name, t(:location_name)
+      = f.text_field :name, class: 'form-control'
+    .form-group
+      = f.label :description, t(:location_description)
+      = f.text_area :description, class: 'form-control'
+
+    = f.submit t(:confirm), class: 'btn btn-primary'

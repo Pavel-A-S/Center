@@ -1,0 +1,30 @@
+- if not @user.blank?
+  = form_for @user do |f|
+    - if @user.errors.any?
+      #error_explanation
+        h2 = "#{t(:you_have_errors)}: #{@user.errors.count}"
+        ul
+          - @user.errors.full_messages.each do |message|
+            li = message
+    .form-group
+      = f.label :email, t(:user_email)
+      - if controller.action_name == 'new'
+        = f.email_field :email, class: 'form-control'
+      - else
+        = f.email_field :email, disabled: true, class: 'form-control'
+    .form-group
+      = f.label :name, t(:user_name)
+      = f.text_field :name, class: 'form-control'
+    .form-group
+      = f.label :role, t(:user_role)
+      = f.select :role, User.roles.keys.map{ |r| [r, r] },
+                        { include_blank: true },
+                        { class: 'form-control' }
+    .form-group
+      = f.label :password
+      = f.password_field :password, class: 'form-control'
+    .form-group
+      = f.label :password_confirmation
+      = f.password_field :password_confirmation, class: 'form-control'
+
+    = f.submit t(:confirm), class: 'btn btn-primary'

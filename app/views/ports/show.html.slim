@@ -1,0 +1,53 @@
+- if not @port.blank?
+  .panel.panel-default.port_show_size
+    .panel-heading
+      h3.panel-title
+        b = t(:port)
+    .panel-body
+      dl
+        dt
+          = t(:port_name)
+        br
+        dd
+          = @port.name
+        br
+        dt
+          = t(:port_order)
+        br
+        dd
+          = @port.order_index
+        br
+        dt
+          = t(:port_number)
+        br
+        dd
+          = @port.port_number
+        br
+        dt
+          = t(:port_type)
+        br
+        dd
+          = @port.port_type
+        br
+        dt
+          = t(:port_location)
+        br
+        dd
+          = @port.try(:location).try(:name)
+        br
+        dt
+          = t(:port_connection)
+        br
+        dd
+          = @port.try(:connection).try(:name)
+        br
+        dt
+          = t(:port_description)
+        br
+        dd
+          = @port.description
+        br
+        = link_to t(:ports), ports_path
+        = ' | '
+        = link_to t(:edit), edit_port_path(@port)
+

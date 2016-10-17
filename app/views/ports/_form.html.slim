@@ -1,0 +1,39 @@
+- if not @port.blank?
+  = form_for @port do |f|
+    - if @port.errors.any?
+      #error_explanation
+        h2 = "#{t(:you_have_errors)}: #{@port.errors.count}"
+        ul
+          - @port.errors.full_messages.each do |message|
+            li = message
+    .form-group
+      = f.label :name, t(:port_name)
+      = f.text_field :name, class: 'form-control'
+    .form-group
+      = f.label :order_index, t(:port_order)
+      = f.number_field :order_index, class: 'form-control'
+    .form-group
+      = f.label :port_number, t(:port_number)
+      = f.select :port_number, Port.port_numbers.keys                          \
+                                    .map{ |number| [number, number] }, {},
+                                { class: 'form-control' }
+    .form-group
+      = f.label :port_type, t(:port_type)
+      = f.select :port_type, Port.port_types.keys                              \
+                                  .map{ |type| [type, type] }, {},
+                              { class: 'form-control' }
+    .form-group
+      = f.label :location_id, t(:port_location)
+      = f.select :location_id, Location.all.collect { |l| [l.name, l.id] },
+                                { include_blank: true },
+                                { class: 'form-control' }
+    .form-group
+      = f.label :connection_id, t(:port_connection)
+      = f.select :connection_id, Connection.all.collect { |c| [c.name, c.id] },
+                                { include_blank: true },
+                                { class: 'form-control' }
+    .form-group
+      = f.label :description, t(:port_description)
+      = f.text_area :description, class: 'form-control'
+
+    = f.submit t(:confirm), class: 'btn btn-primary'

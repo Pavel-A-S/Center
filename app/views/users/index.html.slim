@@ -1,0 +1,42 @@
+- content_for :main_title do
+  div class='main-title-content'
+    = t(:users)
+= link_to new_user_path, class: 'btn btn-primary' do
+  span.glyphicon.glyphicon-plus
+  = t(:create_user)
+br
+br
+
+.table-responsive
+  table.table.table-striped.table-bordered.table-hover#user-sources-table.no_scroll
+    thead
+      tr
+        th
+          = t(:user_email)
+        th
+          = t(:user_name)
+        th
+          = t(:user_role)
+        th
+        th
+    tbody
+      - @users.each do |user|
+        tr
+          td
+            = user.email
+          td
+            = user.name
+          td
+            = user.role
+          td
+            = link_to t(:edit), edit_user_path(user) 
+          td
+            = link_to t(:delete), user, method: :delete, data: { confirm: t(:delete_confirmation) }
+
+
+
+
+
+
+
+

@@ -1,0 +1,35 @@
+- if not @connection.blank?
+  = form_for @connection do |f|
+    - if @connection.errors.any?
+      #error_explanation
+        h2 = "#{t(:you_have_errors)}: #{@connection.errors.count}"
+        ul
+          - @connection.errors.full_messages.each do |message|
+            li = message
+    .form-group
+      = f.label :name, t(:connection_name)
+      = f.text_field :name, class: 'form-control'
+    .form-group
+      = f.label :login, t(:connection_login)
+      = f.text_field :login, class: 'form-control'
+    .form-group
+      = f.label :password, t(:connection_password)
+      = f.text_field :password, class: 'form-control'
+    .form-group
+      = f.label :identifier, t(:connection_identifier)
+      = f.text_field :identifier, class: 'form-control'
+    .form-group
+      = f.label :description, t(:connection_description)
+      = f.text_area :description, class: 'form-control'
+    .form-group
+      = f.label :frequency, t(:connection_frequency)
+      = f.number_field :frequency, class: 'form-control'
+    .form-group
+      = f.label :time_out, t(:connection_time_out)
+      = f.number_field :time_out, class: 'form-control'
+    .checkbox
+      = f.label :update_me do
+        = f.check_box :update_me
+        = t(:connection_update_me)
+
+    = f.submit t(:confirm), class: 'btn btn-primary'
