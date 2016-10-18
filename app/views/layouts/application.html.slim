@@ -59,7 +59,12 @@ html lang="en"
     div id="flash"
       - flash.each do |name, msg|
         - if name != "timedout"
-          = content_tag :div, class: "alert alert-#{ name == 'error' ? "danger" : "success" } alert-dismissable", role: "alert" do
+          - if name == "alert"
+            - ending = "danger"
+          - else
+            - ending = "success"
+          = content_tag :div, class: "alert alert-#{ending} alert-dismissable",
+                              role: "alert" do
             button.close type="button" data-dismiss="alert"
               span aria-hidden="true"
                 | &times;

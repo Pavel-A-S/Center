@@ -198,7 +198,7 @@ class CommandsController < ApplicationController
           voltage = 'voltage_' + Port.port_numbers[p.port_number].to_s
           raw_data = Record.where(connection_id: p.connection_id)
                            .pluck(voltage, 'created_at')
-                           .try(:last, 1000)
+                           .try(:last, 1000) rescue nil
           chart_data = convert_chart_data(raw_data) if !raw_data.blank?
         elsif port_group(p.port_type) == 'checker'
           time_out = p.connection.try(:time_out)

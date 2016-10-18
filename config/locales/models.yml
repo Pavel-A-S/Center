@@ -6,6 +6,20 @@ ru:
         email: "Почта"
         password: "Пароль"
         password_confirmation: "Подтверждение пароля"
+      connection:
+        name: "Название"
+        login: "Логин"
+        password: "Пароль"
+        identifier: "IMEI"
+        frequency: "Частота опроса контроллера"
+        time_out: "Допустимый перерыв между ответами контроллера"
+        description: "Описание"
+      location:
+        name: "Название"
+        description: "Описание"
+      port:
+        name: "Название"
+        order_index: "Приоритет отображения"
 
     errors:
       models:
@@ -26,6 +40,43 @@ ru:
                 other: "- должно быть не меньше 8 символов."
             password_confirmation:
               confirmation: "- должно совпадать с паролем."
+        connection:
+          attributes:
+            name:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 250 символов максимум"
+            login:
+              blank: "- нужно указать."
+            password:
+              blank: "- нужно указать."
+            identifier:
+              blank: "- нужно указать."
+              taken: "- уже присутствует в системе"
+            frequency:
+              not_a_number: "- нужно указать (проверьте значение)."
+              less_than: "- должна быть меньше"
+              greater_than: "- должна быть больше 0"
+            time_out:
+              not_a_number: "- нужно указать (проверьте значение)."
+              less_than: "- должен быть меньше"
+              greater_than: "- должен быть больше 0"
+        location:
+          attributes:
+            name:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 250 символов максимум"
+        port:
+          attributes:
+            name:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 250 символов максимум"
+            order_index:
+              not_a_number: "- нужно указать (проверьте значение)."
+              less_than: "- должен быть меньше"
+              greater_than: "- должен быть больше"
 
       messages:
         record_invalid: "данные не прошли валидацию"
@@ -37,6 +88,21 @@ en:
         email: "Email"
         password: "Password"
         password_confirmation: "Password confirmation"
+      connection:
+        name: "Name"
+        login: "Login"
+        password: "Password"
+        identifier: "IMEI"
+        frequency: "The frequency of checks"
+        time_out: "The allowable interval between the controller answers"
+        description: "Description"
+      location:
+        name: "Name"
+        description: "Description"
+      port:
+        name: "Name"
+        order_index: "Display priority"
+
 
     errors:
       models:
@@ -57,7 +123,44 @@ en:
                 other: "must not be less than 8 symbols."
             password_confirmation:
               confirmation: "wrong."
+        connection:
+          attributes:
+            name:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 250 symbols maximum."
+            login:
+              blank: "- must be present."
+            password:
+              blank: "- must be present."
+            identifier:
+              blank: "- must be present."
+              taken: "- is already present in the system"
+            frequency:
+              not_a_number: "must be present. (check value)."
+              less_than: "must be less"
+              greater_than: "must be more"
+            time_out:
+              not_a_number: "must be present. (check value)."
+              less_than: "must be less"
+              greater_than: "must be more"
+        location:
+          attributes:
+            name:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 250 symbols maximum."
+        port:
+          attributes:
+            name:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 250 symbols maximum."
+            order_index:
+              not_a_number: "must be present. (check value)."
+              less_than: "must be less"
+              greater_than: "must be more"
 
-          messages:
-            record_invalid: "data isn't valid"
+      messages:
+        record_invalid: "data isn't valid"
 

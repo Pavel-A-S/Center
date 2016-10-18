@@ -1,4 +1,12 @@
 ru:
+  # Layout
+  settings: "Настройки"
+  exit: "Выход"
+  brand: "Центр"
+  engineers: "Инженерные объекты"
+  securities: "Объекты под охраной"
+  administrators: "Объекты под административным контролем"
+  # Common elements
   create: "Создать"
   edit: "Редактировать"
   delete: "Удалить"
@@ -16,9 +24,6 @@ ru:
   enter: "Войти"
   recover_password: "Восстановить пароль"
   remember_me: " запомнить меня"
-  #
-  exit: "Выход"
-  brand: "Центр"
   # Users
   user: "Пользователь"
   users: "Пользователи"
@@ -29,19 +34,18 @@ ru:
   editing_user: "Редактирование пользователя"
   new_user: "Новый пользователь"
   you_have_errors: "Ошибки"
+  # Users - controller
   user_was_created: "Пользователь был успешно создан"
   user_was_updated: "Пользователь был успешно обновлён"
   user_was_deleted: "Пользователь был успешно удалён"
+  user_was_not_created: "Пользователь не был создан"
+  user_was_not_updated: "Пользователь не был обновлён"
   user_was_not_deleted: "Пользователь не был удалён"
   not_allowed: "Вы не можете так делать"
   #
-  engineers: "Инженерные объекты"
-  securities: "Объекты под охраной"
-  administrators: "Объекты под административным контролем"
-  #
   event_type: "Тип"
   event_date: "Дата"
-  #
+  # Connections
   connection: "Соединение"
   connections: "Соединения"
   create_connection: " Создать соединение"
@@ -55,8 +59,13 @@ ru:
   editing_connection: "Редактирование соединения"
   connection_time_out: "Допустимый перерыв (секунды)"
   connection_update_me: "Перезапустить службу"
-  #
-  settings: "Настройки"
+  # Connections - controller
+  connection_was_created: "Соединение было создано"
+  connection_was_updated: "Соединение было обновлено"
+  connection_was_deleted: "Соединение было удалено"
+  connection_was_not_created: "Соединение не было создано"
+  connection_was_not_updated: "Соединение не было обновлено"
+  connection_was_not_deleted: "Соединение не было удалено"
   # Ports part 1
   port: "Порт"
   ports: "Порты"
@@ -81,7 +90,14 @@ ru:
   leak_is_detected: "Обнаружена протечка"
   switch_on: "Включить"
   switch_off: "Выключить"
-  #
+  # Ports - controller
+  port_was_created: "Порт был создан"
+  port_was_updated: "Порт был обновлён"
+  port_was_deleted: "Порт был удалён"
+  port_was_not_created: "Порт не был создан"
+  port_was_not_updated: "Порт не был обновлён"
+  port_was_not_deleted: "Порт не был удалён"
+  # Locations
   location: "Объект"
   locations: "Объекты"
   location_name: "Название"
@@ -89,9 +105,23 @@ ru:
   create_location: " Создать объект"
   new_location: "Новый объект"
   editing_location: "Редактирование объекта"
-
+  # Locations - controller
+  location_was_created: "Объект был создан"
+  location_was_updated: "Объект был обновлён"
+  location_was_deleted: "Объект был удалён"
+  location_was_not_created: "Объект не был создан"
+  location_was_not_updated: "Объект не был обновлён"
+  location_was_not_deleted: "Объект не был удалён"
 
 en:
+  # Layout
+  settings: "Settings"
+  exit: "Exit"
+  brand: "Center"
+  engineers: "Engineering objects"
+  securities: "Objects under protection"
+  administrators: "Objects under administrative control"
+  # Common elements
   create: "Create"
   edit: "Edit"
   delete: "Delete"
@@ -109,9 +139,6 @@ en:
   enter: "Enter"
   recover_password: "Forgot your password?"
   remember_me: "remember me"
-  #
-  exit: "Exit"
-  brand: "Center"
   # Users
   user: "User"
   users: "Users"
@@ -122,19 +149,18 @@ en:
   editing_user: "Editing user"
   new_user: "New user"
   you_have_errors: "Errors"
+  # Users - controller
   user_was_created: "User was successfully created"
   user_was_updated: "User was successfully updated"
   user_was_deleted: "User was successfully deleted"
-  user_was_not_deleted: "user was not deleted"
+  user_was_not_created: "user wasn't created"
+  user_was_not_updated: "user wasn't updated"
+  user_was_not_deleted: "user wasn't deleted"
   not_allowed: "You cann't do it"
-  #
-  engineers: "Engineering objects"
-  securities: "Objects under protection"
-  administrators: "Objects under administrative control"
   #
   event_type: "Type"
   event_date: "Date"
-  #
+  # Connections
   connection: "Connection"
   connections: "Connections"
   create_connection: "Create connection"
@@ -148,8 +174,13 @@ en:
   editing_connection: "Editing connection"
   connection_time_out: "Time out"
   connection_update_me: "Update me"
-  #
-  settings: "Settings"
+  # Connections - controller
+  connection_was_created: "Connection was successfully created."
+  connection_was_updated: "Connection was successfully updated."
+  connection_was_deleted: "Connection was successfully deleted."
+  connection_was_not_created: "Connection wasn't created."
+  connection_was_not_updated: "Connection wasn't updated."
+  connection_was_not_deleted: "Connection wasn't deleted."
   # Ports part 1
   port: "Port"
   ports: "Ports"
@@ -174,7 +205,14 @@ en:
   leak_is_detected: "Leak is detected"
   switch_on: "Enable"
   switch_off: "Disable"
-  #
+  # Ports - controller
+  port_was_created: "Port was successfully created."
+  port_was_updated: "Port was successfully updated."
+  port_was_deleted: "Port was successfully deleted."
+  port_was_not_created: "Port wasn't created."
+  port_was_not_updated: "Port wasn't updated."
+  port_was_not_deleted: "Port wasn't deleted."
+  # Locations
   location: "Location"
   locations: "Locations"
   location_name: "Name"
@@ -182,6 +220,12 @@ en:
   create_location: "Create location"
   new_location: "New location"
   editing_location: "Editing location"
-
+  # Locations - controller
+  location_was_created: "Location was successfully created."
+  location_was_updated: "Location was successfully updated."
+  location_was_deleted: "Location was successfully deleted."
+  location_was_not_created: "Location wasn't created."
+  location_was_not_updated: "Location wasn't updated."
+  location_was_not_deleted: "Location wasn't deleted."
 
 

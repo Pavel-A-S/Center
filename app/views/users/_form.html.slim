@@ -8,7 +8,7 @@
             li = message
     .form-group
       = f.label :email, t(:user_email)
-      - if controller.action_name == 'new'
+      - if controller.action_name == 'new' || controller.action_name == 'create'
         = f.email_field :email, class: 'form-control'
       - else
         = f.email_field :email, disabled: true, class: 'form-control'
