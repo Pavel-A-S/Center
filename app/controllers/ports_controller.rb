@@ -56,6 +56,7 @@ class PortsController < ApplicationController
                                                         :port_type,
                                                         :location_id,
                                                         :connection_id,
+                                                        :icon,
                                                         :description)
     end
 end

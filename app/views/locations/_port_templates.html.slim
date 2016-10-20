@@ -1,60 +1,60 @@
-- if ports_parameters
-  - ports_parameters.each do |p|
-    - if p[:port_type] == 'temperature_sensor'
+- if ports
+  - ports.each do |p|
+    - if p.port_type == 'temperature_sensor'
       div class="plate"
         div class="panel panel-info"
           div class="panel-heading"
             h3 class="panel-title"
-              = p[:name]
-          div class="panel-body" id="port_#{p[:port_id]}"
+              = p.name
+          div class="panel-body" id="port_#{p.id}"
             | no data
-    - if p[:port_type] == 'reed_switch'
+    - if p.port_type == 'reed_switch'
       div class="plate"
         div class="panel panel-info"
           div class="panel-heading"
             h3 class="panel-title"
-              = p[:name]
-          div class="panel-body" id="port_#{p[:port_id]}"
+              = p.name
+          div class="panel-body" id="port_#{p.id}"
             | no data
-    - if p[:port_type] == 'motion_sensor'
+    - if p.port_type == 'motion_sensor'
       div class="plate"
         div class="panel panel-info"
           div class="panel-heading"
             h3 class="panel-title"
-              = p[:name]
-          div class="panel-body" id="port_#{p[:port_id]}"
+              = p.name
+          div class="panel-body" id="port_#{p.id}"
             | no data
-    - if p[:port_type] == 'leak_sensor'
+    - if p.port_type == 'leak_sensor'
       div class="plate"
         div class="panel panel-info"
           div class="panel-heading"
             h3 class="panel-title"
-              = p[:name]
-          div class="panel-body" id="port_#{p[:port_id]}"
+              = p.name
+          div class="panel-body" id="port_#{p.id}"
             | no data
-    - if p[:port_type] == 'switch'
+    - if p.port_type == 'switch'
       div class="plate"
         div class="panel panel-info"
           div class="panel-heading"
             h3 class="panel-title"
-              = p[:name]
-          div class="panel-body" id="port_#{p[:port_id]}"
+              = p.name
+          div class="panel-body" id="port_#{p.id}"
             | no data
-          div class="btn btn-primary port_button" id="button_#{p[:port_id].to_s}"
-            span.glyphicon.glyphicon-plus.port_button_glyphicon id="button_text_#{p[:port_id]}"
+          div class="btn btn-primary port_button" id="button_#{p.id.to_s}"
+            span.glyphicon.glyphicon-plus.port_button_glyphicon id="button_text_#{p.id}"
               | no data
           br
           br
-    - if p[:port_type] == 'connection_checker'
+    - if p.port_type == 'connection_checker'
       div class="plate"
         div class="panel panel-info"
           div class="panel-heading"
             h3 class="panel-title"
-              = p[:name]
-          div class="panel-body" id="port_#{p[:port_id]}"
+              = p.name
+          div class="panel-body" id="port_#{p.id}"
             | no data
-    - if p[:port_type] == 'temperature_chart'
-      div id="port_#{p[:port_id]}"
+    - if p.port_type == 'temperature_chart'
+      div id="port_#{p.id}"
 
 
 

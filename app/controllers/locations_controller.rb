@@ -5,25 +5,20 @@ class LocationsController < ApplicationController
     @locations = Location.all
   end
 
+  def user_index
+    @locations = Location.all
+    @locations_parameters = []
+    @ports_ids = Port.where(connection_id: @locations)
+                     .where.not(port_type: Port.port_types['temperature_chart'])
+                     .pluck(:id)
+  end
+
   def show
   end
 
   def page
     @ports = @location.ports.try(:order, :order_index)
-    @ports_parameters = []
-    @ports.each do |p|
-
-
-      data = { name: p.name,
-               port_type: p.port_type,
-               port_number: p.port_number,
-               port_id: p.id,
-               connection_id: p.connection_id }
-
-      data[:identifier] = p.connection.try(:identifier) if p.switch?
-
-      @ports_parameters << data
-    end
+    @ports_ids = @ports.map { |p| p.id }
   end
 
   def new

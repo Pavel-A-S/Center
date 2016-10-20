@@ -22,6 +22,8 @@ br
         th
           = t(:port_connection)
         th
+          = t(:port_icon)
+        th
           = t(:port_description)
         th
         th
@@ -41,6 +43,8 @@ br
             = port.try(:location).try(:name)
           td
             = port.try(:connection).try(:name)
+          td
+            = port.icon
           td
             = port.description
           td

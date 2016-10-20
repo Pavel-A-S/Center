@@ -1,0 +1,14 @@
+- @locations.each do |l|
+  div class="plate"
+    div class="panel panel-info" id="location_#{l.id}"
+      div class="panel-heading"
+        h3 class="panel-title"
+          = link_to l.name, page_location_path(l)
+      div class="panel-body"
+        = l.description
+        hr.hr-small
+        = render partial: 'glyphicons_templates', locals: { location: l }
+
+script
+  | $(getData('#{@ports_ids.to_json.html_safe}', '#{command_handler_path}',
+  |           'user_index'));

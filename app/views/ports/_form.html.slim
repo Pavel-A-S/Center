@@ -33,6 +33,10 @@
                                 { include_blank: true },
                                 { class: 'form-control' }
     .form-group
+      = f.label :icon, t(:port_icon)
+      = f.select :icon, Port.icons.keys.map{ |i| [i, i] }, {},
+                        { class: 'form-control' }
+    .form-group
       = f.label :description, t(:port_description)
       = f.text_area :description, class: 'form-control'
 

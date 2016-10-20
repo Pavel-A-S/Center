@@ -1,21 +1,23 @@
 // Main function which updates data on the page every X seconds
-function getData(ports_parameters, url) {
+function getData(ports_parameters, url, location) {
 
   // Send to and get data from the server at first time
-  dataRequest(ports_parameters, null, url);
+  dataRequest(ports_parameters, null, url, location);
 
   // Create repeater for sending to and getting data from the server
   if (typeof dataUpdateInterval === 'undefined' ||
              dataUpdateInterval === null) {
     window.dataUpdateInterval = setInterval(function() {
                                               dataRequest(ports_parameters,
-                                                          null, url);
+                                                          null,
+                                                          url,
+                                                          location);
                                             }, 5000);
   }
 }
 
 // Main function which listens buttons
-function trigger(ports_parameters, url, e) {
+function trigger(ports_parameters, url, e, location) {
 
   // Determine pressed element
   var button_id = 'undefined';
@@ -30,50 +32,21 @@ function trigger(ports_parameters, url, e) {
 
     // Disable pressed button
     $('#' + button_id).attr('disabled', true);
-    $('#' + button_id).attr('data-status', 'ready');
-
-    // Eject input information
-    var data = JSON.parse(ports_parameters);
-    var button_ids = [];
-
-    // Select all buttons
-    for (var i = 0; i < data.length; i++) {
-      if (data[i].port_type == 'switch') {
-        button_ids.push(['button_' + data[i].port_id, data[i].port_id]);
-      }
-    }
-
-    // Select pressed buttons
-    var selected_buttons = [];
-    for (var i = 0; i < button_ids.length; i++) {
-      if ($('#' + button_ids[i][0]).attr('disabled') == 'disabled' &&
-          $('#' + button_ids[i][0]).attr('data-status') == 'ready') {
-
-        selected_buttons.push(button_ids[i][1]);
-
-        $('#' + button_ids[i][0]).attr('data-status', 'await');
-      }
-    }
+    $('#' + button_id).attr('data-status', 'await');
 
     // Send data to the server
-    dataRequest(ports_parameters, selected_buttons, url);
+    dataRequest(ports_parameters, button_id, url, location);
   }
 }
 
 // Send data to the server
-function dataRequest(ports_parameters, buttons, url) {
-
-  if (buttons === null) {
-    var selected_buttons = [];
-  } else {
-    var selected_buttons = buttons;
-  }
+function dataRequest(ports_parameters, button_id, url, location) {
 
   // Prepare message
-  if (selected_buttons.length > 0) {
+  if (button_id != null) {
     var message = { 'command':'GetData',
                     'ports_parameters':ports_parameters,
-                    'selected_buttons':JSON.stringify(selected_buttons) }
+                    'button_id':button_id }
   } else {
     var message = { 'command':'GetData', 'ports_parameters':ports_parameters }
   }
@@ -87,52 +60,102 @@ function dataRequest(ports_parameters, buttons, url) {
     dataType: 'json',
     async: true,
     success: function(answer) {
-      mapData(answer);
+      mapData(answer, location);
     },
     timeout: 50000
   });
 }
 
 // Distribute gathered information from the server on the page
-function mapData(answer) {
+function mapData(answer, location) {
 
   if (answer.ports_parameters != undefined) {
+
+    // For main panels highlighting
+    var danger_panels = [];
+    var info_panels = [];
 
     // Distribute information depend on a port type
     for (var i = 0; i < answer.ports_parameters.length; i++) {
       var p = answer.ports_parameters[i];
-      if (p.port_type == 'temperature_sensor') {
-        $('#port_' + p.port_id).text(p.temperature).append(' &deg;C');
-      } else if (p.port_type == 'reed_switch') {
-        $('#port_' + p.port_id).text(p.text);
-      } else if (p.port_type == 'motion_sensor') {
-        $('#port_' + p.port_id).text(p.text);
-      } else if (p.port_type == 'leak_sensor') {
-        $('#port_' + p.port_id).text(p.text);
-      } else if (p.port_type == 'switch') {
-        $('#port_' + p.port_id).text(p.text);
-        $('#button_text_' + p.port_id).text(p.button_text);
-      } else if (p.port_type == 'temperature_chart') {
-        var a = MyChart(p.chart_data, p.port_id);
-      } else if (p.port_type == 'connection_checker') {
-        $('#port_' + p.port_id).text(p.created_at);
-        if (p.state == 1) {
-          $('#port_' + p.port_id).parent().removeClass('panel-info')
-                                          .addClass('panel-danger');
-        } else {
-          $('#port_' + p.port_id).parent().removeClass('panel-danger')
-                                          .addClass('panel-info');
+      var id = p.port_id;
+      var type = p.port_type;
+      if (location == 'page') {
+        var info = 'panel-info';
+        var danger = 'panel-danger';
+        var success = 'panel-success';
+        var target = $('#port_' + id).parent();
+
+        if (type == 'temperature_sensor') {
+          $('#port_' + id).text(p.temperature).append(' &deg;C');
+        } else if (type == 'reed_switch') {
+          $('#port_' + id).text(p.text);
+        } else if (type == 'motion_sensor') {
+          $('#port_' + id).text(p.text);
+        } else if (type == 'leak_sensor') {
+          $('#port_' + id).text(p.text);
+        } else if (type == 'switch') {
+          $('#port_' + id).text(p.text);
+          $('#button_text_' + id).text(p.button_text);
+        } else if (type == 'temperature_chart') {
+          var a = MyChart(p.chart_data, id);
+        } else if (type == 'connection_checker') {
+          $('#port_' + id).text(p.created_at);
         }
+
+      } else if (location == 'user_index') {
+        var target = $('#' + p.location_id + '_' + id);
+        var info = 'alert-info';
+        var danger = 'alert-danger';
+        var success = 'alert-success';
+      }
+
+      var accepted_for_danger_state = ['reed_switch',
+                                       'motion_sensor',
+                                       'temperature_sensor',
+                                       'leak_sensor',
+                                       'connection_checker'].indexOf(type)
+
+      var accepted_for_success_state = ['switch'].indexOf(type)
+
+      // Select panels for highlighting
+      if (p.state == 1 && accepted_for_danger_state != -1) {
+        if (danger_panels.indexOf(p.location_id) == -1) {
+          danger_panels[i] = p.location_id;
+        }
+      } else if (p.state == 0 && accepted_for_danger_state != -1) {
+        if (info_panels.indexOf(p.location_id) == -1) {
+          info_panels[i] = p.location_id;
+        }
+      }
+
+      // Change color
+      if (p.state == 1 && accepted_for_danger_state != -1) {
+        target.removeClass(info).addClass(danger);
+      } else if (p.state == 1 && accepted_for_success_state != -1) {
+        target.removeClass(info).addClass(success);
+      } else if (p.state == 0 && accepted_for_danger_state != -1) {
+        target.removeClass(danger).addClass(info);
+      } else if (p.state == 0 && accepted_for_success_state != -1) {
+        target.removeClass(success).addClass(info);
       }
     }
 
+    // Highlight panels in normal state
+    for (var i = 0; i < info_panels.length; i++) {
+      $('#location_' + info_panels[i]).removeClass('panel-danger')
+                                      .addClass('panel-info');
+    }
+    // Highlight panels in alert state
+    for (var i = 0; i < danger_panels.length; i++) {
+      $('#location_' + danger_panels[i]).removeClass('panel-info')
+                                        .addClass('panel-danger');
+    }
+
     // Enable disabled button
-    if (answer.selected_buttons != 'no_buttons') {
-      for (var i = 0; i < answer.selected_buttons.length; i++) {
-        $('#button_' + answer.selected_buttons[i]).attr('data-status',
-                                                        'nothing');
-        $('#button_' + answer.selected_buttons[i]).attr('disabled', false);
-      }
+    if (answer.button_id != 'no_buttons') {
+      $('#button_' + answer.button_id).attr('data-status', 'nothing');
+      $('#button_' + answer.button_id).attr('disabled', false);
     }
   }
 }
@@ -168,13 +191,15 @@ function MyChart(answer, port_id) {
   function createChart(raw_data) {
 
     // Append chart to div
-    var svg = d3.select("#port_" + port_id).append("svg")
-        .attr("class", "center_chart")
-        .attr("id", "svg_chart_" + port_id)
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var svg = d3.select("#port_" + port_id)
+                .append("svg")
+                .attr("class", "center_chart")
+                .attr("id", "svg_chart_" + port_id)
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top
+                                                                    + ")");
 
     // Prepare data from json
     var data = raw_data;
@@ -189,23 +214,23 @@ function MyChart(answer, port_id) {
 
     // Set data
     svg.append("g")
-        .attr("class", "axis axis--x")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+       .attr("class", "axis axis--x")
+       .attr("transform", "translate(0," + height + ")")
+       .call(d3.axisBottom(x));
     svg.append("g")
-        .attr("class", "axis axis--y")
-        .call(d3.axisLeft(y))
+       .attr("class", "axis axis--y")
+       .call(d3.axisLeft(y))
     svg.append("text")
-        .attr("class", "axis-title")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Temperature");
+       .attr("class", "axis-title")
+       .attr("transform", "rotate(-90)")
+       .attr("y", 6)
+       .attr("dy", ".71em")
+       .style("text-anchor", "end")
+       .text("Temperature");
     svg.append("path")
-        .datum(data)
-        .attr("class", "line")
-        .attr("d", line);
+       .datum(data)
+       .attr("class", "line")
+       .attr("d", line);
   }
 
   // Function for updating existing chart

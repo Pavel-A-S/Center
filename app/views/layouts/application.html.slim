@@ -44,13 +44,13 @@ html lang="en"
                     li
                       = link_to t(:users), users_path
                 li
-                  = link_to t(:administrators), root_path
+                  = link_to t(:administrators), user_index_locations_path
               - if current_user.engineer? || current_user.administrator?
                 li
-                  = link_to t(:engineers), locations_path
+                  = link_to t(:engineers), user_index_locations_path
               - if current_user.security? || current_user.administrator?
                 li
-                  = link_to t(:securities), locations_path
+                  = link_to t(:securities), user_index_locations_path
           ul class="nav navbar-nav navbar-right"
             - if user_signed_in?
               li

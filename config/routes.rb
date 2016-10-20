@@ -3,7 +3,11 @@ Rails.application.routes.draw do
 
   resources :locations do
     member do
-      get 'page'
+      get :page
+    end
+
+    collection do
+      get :user_index
     end
   end
 
@@ -18,7 +22,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'locations#index'
+  root 'locations#user_index'
   post 'command_handler', to: 'commands#command_handler', as: 'command_handler'
 
 end

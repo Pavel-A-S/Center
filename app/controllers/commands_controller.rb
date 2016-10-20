@@ -4,35 +4,31 @@ class CommandsController < ApplicationController
     @request = params[:command]
     if @request == 'GetData'
       @data = JSON.parse(params[:ports_parameters])
-      if params[:selected_buttons]
-        @selected_buttons = JSON.parse(params[:selected_buttons])
-        @selected_buttons.each do |b|
-          port_parameters = @data.find { |x| x['port_id'] == b }
+      @button_id = params[:button_id].to_s[%r{\Abutton_(.*)\z}, 1]
+      if @button_id && @port = Port.find_by(id: @button_id)
 
-          # Determine command
-          @command = get_command(port_parameters)
+        # Determine command
+        @command = get_command(@port)
+
+        if @connection = Connection.find_by(id: @port.connection_id)
 
           # Get answer from controller
-          @id = port_parameters['connection_id']
-          if @connection = Connection.find_by(id: @id)
+          @answer = send_command(@command, @connection.login,
+                                           @connection.password)
 
-            @answer = send_command(@command, @connection['login'],
-                                             @connection['password'])
-
-            # Set data to database
-            set_data(@answer, port_parameters['connection_id'],
-                              port_parameters['identifier'])
-          end
+          # Set data to database
+          set_data(@answer, @port.connection_id,
+                            @port.connection.try(:identifier))
         end
       end
 
-      @selected_buttons ||= 'no_buttons'
+      @button_id ||= 'no_buttons'
 
-      @ports_ids = @data.map { |p| p['port_id'] }
-      @ports = Port.where(id: @ports_ids)
+      @ports = Port.where(id: @data)
 
       @ports_parameters = @ports.group_by { |p| p['connection_id'] }
-      @response = { ports_parameters: [], selected_buttons: @selected_buttons }
+      @response = { button_id: @button_id,
+                    ports_parameters: [] }
 
       @ports_parameters.each do |p|
         @response[:ports_parameters].push(*get_data(p[0], p[1]))
@@ -47,12 +43,12 @@ class CommandsController < ApplicationController
 
   private
 
-    def get_command(input)
-      port_number = input['port_number']
+    def get_command(port)
+      port_number = port.port_number.to_s
 
-      if real_port_number = input['port_number'][%r{\Aoutput_(.*)\z}, 1]
+      if real_port_number = port_number[%r{\Aoutput_(.*)\z}, 1]
 
-        connection_id = input['connection_id']
+        connection_id = port.connection_id
         data = Record.where(connection_id: connection_id).last.try(port_number)
         if data == 0
           command = '{"Command":"SetOutputState","Number":' + real_port_number +
@@ -227,6 +223,7 @@ class CommandsController < ApplicationController
             temperature = (((data[voltage].to_f*10/4095)/5 - 0.5)/0.01).round(2)
             output << { temperature: temperature,
                         state: data[state],
+                        location_id: p.location_id,
                         port_type: p.port_type,
                         port_id: p.id }
 
@@ -237,6 +234,7 @@ class CommandsController < ApplicationController
               text = t(:opened)
             end
             output << { state: data[state],
+                        location_id: p.location_id,
                         text: text,
                         port_type: p.port_type,
                         port_id: p.id }
@@ -247,6 +245,7 @@ class CommandsController < ApplicationController
               text = t(:motion_is_detected)
             end
             output << { state: data[state],
+                        location_id: p.location_id,
                         text: text,
                         port_type: p.port_type,
                         port_id: p.id }
@@ -257,6 +256,7 @@ class CommandsController < ApplicationController
               text = t(:leak_is_detected)
             end
             output << { state: data[state],
+                        location_id: p.location_id,
                         text: text,
                         port_type: p.port_type,
                         port_id: p.id }
@@ -269,6 +269,7 @@ class CommandsController < ApplicationController
               button_text = t(:switch_off)
             end
             output << { state: data[state],
+                        location_id: p.location_id,
                         text: text,
                         button_text: button_text,
                         port_type: p.port_type,
@@ -281,6 +282,7 @@ class CommandsController < ApplicationController
             local_time = (created_at + Time.now.utc_offset)
                          .strftime("%H:%M:%S %d.%m.%Y")
             output << { state: state,
+                        location_id: p.location_id,
                         created_at: local_time,
                         port_type: p.port_type,
                         port_id: p.id }

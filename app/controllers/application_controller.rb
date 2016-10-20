@@ -6,11 +6,11 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(user)
     if user.security?
-      locations_path
+      users_index_path
     elsif user.engineer?
-      locations_path
+      users_index_path
     else
-      locations_path
+      users_index_path
     end
   end
 end

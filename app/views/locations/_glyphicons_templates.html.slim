@@ -1,0 +1,44 @@
+- if location
+  - location.ports.order(:order_index).each do |p|
+
+    - if p.door?
+
+      div class="port_picture_wrapper alert alert-info" id="#{location.id}_#{p.id}"
+        span.glyphicon.glyphicon-log-in
+
+    - if p.eye?
+
+      div class="port_picture_wrapper alert alert-info" id="#{location.id}_#{p.id}"
+        span.glyphicon.glyphicon-eye-open
+
+
+    - if p.siren?
+
+      div class="port_picture_wrapper alert alert-info" id="#{location.id}_#{p.id}"
+        span.glyphicon.glyphicon-volume-up
+
+
+    - if p.chart?
+
+      div class="port_picture_wrapper alert alert-info" id="#{location.id}_#{p.id}"
+        span.glyphicon.glyphicon-blackboard
+
+    - if p.temperature?
+
+      div class="port_picture_wrapper alert alert-info" id="#{location.id}_#{p.id}"
+        span.glyphicon.glyphicon-dashboard
+
+    - if p.water?
+
+      div class="port_picture_wrapper alert alert-info" id="#{location.id}_#{p.id}"
+        span.glyphicon.glyphicon-tint
+
+    - if p.signal?
+
+      div class="port_picture_wrapper alert alert-info" id="#{location.id}_#{p.id}"
+        span.glyphicon.glyphicon-flash
+
+    - if p.fire?
+
+      div class="port_picture_wrapper alert alert-info" id="#{location.id}_#{p.id}"
+        span.glyphicon.glyphicon-fire
