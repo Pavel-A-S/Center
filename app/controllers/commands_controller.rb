@@ -207,8 +207,12 @@ class CommandsController < ApplicationController
             else
               state = 0
             end
+            local_time = (created_at + Time.now.utc_offset)
+                         .strftime("%H:%M:%S %d.%m.%Y")
           else
             state = 1
+            local_time = "No data"
+            created_at = "No data"
           end
         end
 
@@ -279,8 +283,6 @@ class CommandsController < ApplicationController
                         port_type: p.port_type,
                         port_id: p.id }
           when 'connection_checker'
-            local_time = (created_at + Time.now.utc_offset)
-                         .strftime("%H:%M:%S %d.%m.%Y")
             output << { state: state,
                         location_id: p.location_id,
                         created_at: local_time,
