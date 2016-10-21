@@ -1,24 +1,47 @@
 class LocationsController < ApplicationController
   before_action :set_location, only: [:show, :edit, :update, :destroy, :page]
+  before_action :must_be_administrator, except: [:user_index, :page]
 
   def index
     @locations = Location.all
   end
 
   def user_index
-    @locations = Location.all
-    @locations_parameters = []
-    @ports_ids = Port.where(connection_id: @locations)
-                     .where.not(port_type: Port.port_types['temperature_chart'])
-                     .pluck(:id)
+
+    # Select locations according to rights
+    if current_user.administrator?
+      @locations = Location.all
+    elsif current_user.engineer? || current_user.security?
+      @access_value = User.roles[current_user.role]
+      @locations = Location.where(access: @access_value)
+    else
+      @locations = nil
+    end
+
+    if @locations
+      @excepted_port = Port.port_types['temperature_chart']
+      @ports_ids = Port.where(connection_id: @locations)
+                       .where.not(port_type: @excepted_port)
+                       .pluck(:id)
+    end
   end
 
   def show
   end
 
   def page
-    @ports = @location.ports.try(:order, :order_index)
-    @ports_ids = @ports.map { |p| p.id }
+    if @location
+
+      # Select locations according to rights
+      if current_user.administrator?
+        @ports = @location.ports.order(:order_index)
+      elsif current_user.engineer? || current_user.security?
+        @access_value = User.roles[current_user.role]
+        @ports = @location.ports.where(access: @access_value)
+                                .order(:order_index)
+      end
+      @ports_ids = @ports.map { |p| p.id }
+    end
   end
 
   def new
@@ -65,6 +88,6 @@ class LocationsController < ApplicationController
     end
 
     def location_params
-      params.require(:location).permit(:name, :description)
+      params.require(:location).permit(:name, :description, :access)
     end
 end

@@ -27,7 +27,7 @@
           = t(:port_type)
         br
         dd
-          = @port.port_type
+          = t("#{@port.port_type}") if @port.port_type
         br
         dt
           = t(:port_location)
@@ -45,13 +45,19 @@
           = t(:port_icon)
         br
         dd
-          = @port.icon
+          = t("#{@port.icon}") if @port.icon
         br
         dt
           = t(:port_description)
         br
         dd
           = @port.description
+        br
+        dt
+          = t(:port_access)
+        br
+        dd
+          = t("#{@port.access}") if @port.access
         br
         = link_to t(:ports), ports_path
         = ' | '

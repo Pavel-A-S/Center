@@ -76,6 +76,7 @@ ru:
   port_location: "Отображать в"
   port_connection: "Соединение"
   port_description: "Описание"
+  port_access: "Доступ"
   port_icon: "Изображение"
   create_port: " Создать порт"
   new_port: "Новый порт"
@@ -103,6 +104,7 @@ ru:
   locations: "Объекты"
   location_name: "Название"
   location_description: "Описание"
+  location_access: "Доступ"
   create_location: " Создать объект"
   new_location: "Новый объект"
   editing_location: "Редактирование объекта"
@@ -113,6 +115,28 @@ ru:
   location_was_not_created: "Объект не был создан"
   location_was_not_updated: "Объект не был обновлён"
   location_was_not_deleted: "Объект не был удалён"
+  # Enums
+  security: "Охрана"
+  engineer: "Инженеры"
+  administrator: "Администраторы"
+  # Sensors
+  reed_switch: "Геркон"
+  motion_sensor: "Датчик движения"
+  temperature_sensor: "Термометр"
+  leak_sensor: "Датчик протечки"
+  switch: "Переключатель"
+  temperature_chart: "График температуры"
+  connection_checker: "Проверка связи"
+  # Icons
+  door: "Дверь"
+  eye: "Глаз"
+  siren: "Динамик"
+  chart: "График"
+  temperature: "Термометр"
+  water: "Вода"
+  signal: "Сигнал"
+  fire: "Огонь"
+  electricity: "Электричество"
 
 en:
   # Layout
@@ -193,6 +217,7 @@ en:
   port_connection: "Connection"
   port_description: "Description"
   port_icon: "Icon"
+  port_access: "Access"
   create_port: "Create port"
   new_port: "New port"
   editing_port: "Editing port"
@@ -219,6 +244,7 @@ en:
   locations: "Locations"
   location_name: "Name"
   location_description: "Description"
+  location_access: "Access"
   create_location: "Create location"
   new_location: "New location"
   editing_location: "Editing location"
@@ -229,5 +255,26 @@ en:
   location_was_not_created: "Location wasn't created."
   location_was_not_updated: "Location wasn't updated."
   location_was_not_deleted: "Location wasn't deleted."
-
+  # Enums
+  security: "Security"
+  engineer: "Engineers"
+  administrator: "Administrators"
+  # Sensors
+  reed_switch: "Reed switch"
+  motion_sensor: "Motion sensor"
+  temperature_sensor: "Temperature sensor"
+  leak_sensor: "Leak sensor"
+  switch: "Switch"
+  temperature_chart: "Temperature chart"
+  connection_checker: "Connection checker"
+  # Icons
+  door: "Door"
+  eye: "Eye"
+  siren: "Siren"
+  chart: "Chart"
+  temperature: "Temperature"
+  water: "Water"
+  signal: "Signal"
+  fire: "Fire"
+  electricity: "Electricity"
 

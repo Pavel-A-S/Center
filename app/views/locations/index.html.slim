@@ -13,6 +13,8 @@ br
         th
           = t(:location_description)
         th
+          = t(:location_access)
+        th
         th
         th
     tbody
@@ -22,6 +24,8 @@ br
             = link_to location.name, page_location_path(location)
           td
             = location.description
+          td
+            = t("#{location.access}") if location.access
           td
             = link_to t(:show), location
           td

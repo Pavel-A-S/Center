@@ -12,5 +12,11 @@
     .form-group
       = f.label :description, t(:location_description)
       = f.text_area :description, class: 'form-control'
+    .form-group
+      = f.label :access, t(:location_access)
+      = f.select :access, Port.accesses.keys                                   \
+                              .map{ |a| [t("#{a}"), a] },
+                              {},
+                              { class: 'form-control' }
 
     = f.submit t(:confirm), class: 'btn btn-primary'

@@ -17,6 +17,12 @@
         dd
           = @location.description
         br
+        dt
+          = t(:location_access)
+        br
+        dd
+          = t("#{@location.access}") if @location.access
+        br
         = link_to t(:locations), locations_path
         = ' | '
         = link_to t(:edit), edit_location_path(@location)

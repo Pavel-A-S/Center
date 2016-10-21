@@ -1,5 +1,6 @@
 class ConnectionsController < ApplicationController
   before_action :set_connection, only: [:show, :edit, :update, :destroy]
+  before_action :must_be_administrator
 
   def index
     @connections = Connection.all

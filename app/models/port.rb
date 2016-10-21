@@ -13,7 +13,11 @@ class Port < ActiveRecord::Base
                       output_1: 51, output_2: 52, output_3: 53, output_4: 54,
                       output_5: 55, output_6: 56, output_7: 57 }
 
-  enum icon: [:door, :eye, :siren, :chart, :temperature, :water, :signal, :fire]
+  enum icon: [:door, :eye, :siren, :chart, :temperature, :water, :signal,
+                                                                 :fire,
+                                                                 :electricity]
+
+  enum access: [:security, :engineer, :administrator]
 
   validates :name, presence: true, length: { maximum: 250 }
   validates :order_index, numericality: { greater_than: -100000,

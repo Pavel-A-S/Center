@@ -5,8 +5,9 @@ function getData(ports_parameters, url, location) {
   dataRequest(ports_parameters, null, url, location);
 
   // Create repeater for sending to and getting data from the server
-  if (typeof dataUpdateInterval === 'undefined' ||
-             dataUpdateInterval === null) {
+//  if (typeof dataUpdateInterval === 'undefined' ||
+//             dataUpdateInterval === null) {
+    clearInterval(window.dataUpdateInterval);
     window.dataUpdateInterval = setInterval(function() {
                                               dataRequest(ports_parameters,
                                                           null,
@@ -14,7 +15,7 @@ function getData(ports_parameters, url, location) {
                                                           location);
                                             }, 5000);
   }
-}
+//}
 
 // Main function which listens buttons
 function trigger(ports_parameters, url, e, location) {

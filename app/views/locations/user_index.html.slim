@@ -7,7 +7,12 @@
       div class="panel-body"
         = l.description
         hr.hr-small
-        = render partial: 'glyphicons_templates', locals: { location: l }
+        - if current_user.administrator?
+          - l.ports.order(:order_index).each do |p|
+            = render partial: 'glyphicons_templates', locals: { port: p }
+        - else
+          - l.ports.where(access: @access_value).order(:order_index).each do |p|
+            = render partial: 'glyphicons_templates', locals: { port: p }
 
 script
   | $(getData('#{@ports_ids.to_json.html_safe}', '#{command_handler_path}',

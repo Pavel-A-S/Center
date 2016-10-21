@@ -7,26 +7,38 @@ class CommandsController < ApplicationController
       @button_id = params[:button_id].to_s[%r{\Abutton_(.*)\z}, 1]
       if @button_id && @port = Port.find_by(id: @button_id)
 
-        # Determine command
-        @command = get_command(@port)
+        # Check user rights
+        if @port.access == current_user.role || current_user.administrator?
 
-        if @connection = Connection.find_by(id: @port.connection_id)
+          # Determine command
+          @command = get_command(@port)
 
-          # Get answer from controller
-          @answer = send_command(@command, @connection.login,
-                                           @connection.password)
+          if @connection = Connection.find_by(id: @port.connection_id)
 
-          # Set data to database
-          set_data(@answer, @port.connection_id,
-                            @port.connection.try(:identifier))
+            # Get answer from controller
+            @answer = send_command(@command, @connection.login,
+                                             @connection.password)
+
+            # Set data to database
+            set_data(@answer, @port.connection_id,
+                              @port.connection.try(:identifier))
+          end
         end
+      else
+        @button_id = 'no_buttons'
       end
 
-      @button_id ||= 'no_buttons'
-
+      # Select all ports
       @ports = Port.where(id: @data)
 
-      @ports_parameters = @ports.group_by { |p| p['connection_id'] }
+      # Remove port if current user doesn't have right on it
+      if !current_user.administrator?
+        @accepted_ports = @ports.reject { |p| p.access != current_user.role }
+      else
+        @accepted_ports = @ports
+      end
+
+      @ports_parameters = @accepted_ports.group_by { |p| p['connection_id'] }
       @response = { button_id: @button_id,
                     ports_parameters: [] }
 

@@ -45,10 +45,10 @@ html lang="en"
                       = link_to t(:users), users_path
                 li
                   = link_to t(:administrators), user_index_locations_path
-              - if current_user.engineer? || current_user.administrator?
+              - if current_user.engineer?
                 li
                   = link_to t(:engineers), user_index_locations_path
-              - if current_user.security? || current_user.administrator?
+              - if current_user.security?
                 li
                   = link_to t(:securities), user_index_locations_path
           ul class="nav navbar-nav navbar-right"

@@ -20,8 +20,9 @@
     .form-group
       = f.label :port_type, t(:port_type)
       = f.select :port_type, Port.port_types.keys                              \
-                                  .map{ |type| [type, type] }, {},
-                              { class: 'form-control' }
+                                  .map{ |t| [t("#{t}"), t] },
+                                  {},
+                                  { class: 'form-control' }
     .form-group
       = f.label :location_id, t(:port_location)
       = f.select :location_id, Location.all.collect { |l| [l.name, l.id] },
@@ -34,10 +35,17 @@
                                 { class: 'form-control' }
     .form-group
       = f.label :icon, t(:port_icon)
-      = f.select :icon, Port.icons.keys.map{ |i| [i, i] }, {},
+      = f.select :icon, Port.icons.keys.map{ |i| [t("#{i}"), i] }, {},
                         { class: 'form-control' }
     .form-group
       = f.label :description, t(:port_description)
       = f.text_area :description, class: 'form-control'
+
+    .form-group
+      = f.label :access, t(:port_access)
+      = f.select :access, Port.accesses.keys                                   \
+                              .map{ |a| [t("#{a}"), a] },
+                              {},
+                              { class: 'form-control' }
 
     = f.submit t(:confirm), class: 'btn btn-primary'
