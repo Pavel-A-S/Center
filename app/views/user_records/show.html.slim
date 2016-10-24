@@ -1,0 +1,48 @@
+- if not @user_record.blank?
+  .panel.panel-default.user_record_show_size
+    .panel-heading
+      h3.panel-title
+        b = t(:user_record)
+    .panel-body
+      i = t(:user_record_date)
+      br
+      b = @user_record.date.strftime("%H:%M:%S %d.%m.%Y")
+      hr
+      i = t(:user_record_full_name)
+      br
+      b = "#{@user_record.last_name} #{@user_record.first_name} #{@user_record \
+                                                                .middle_name}"
+      hr
+      i = t(:user_record_document_type)
+      br
+      b = @user_record.document_type
+      hr
+      i = t(:user_record_document_number)
+      br
+      b = @user_record.document_number
+      hr
+      i = t(:user_record_date_of_issue)
+      br
+      b = @user_record.date_of_issue.strftime("%d.%m.%Y")
+      hr
+      i = t(:user_record_document_description)
+      br
+      b = @user_record.document_description
+      hr
+      i = t(:user_record_initiator)
+      br
+      b = @user_record.initiator
+      hr
+      i = t(:user_record_description)
+      br
+      b = @user_record.description
+      hr
+      i = t(:user_record_created_by)
+      br
+      b = @user_record.user.try(:name)
+      hr
+      div.user_record_show_footer
+        = link_to t(:user_records), user_records_path
+        = ' | '
+        = link_to t(:edit), edit_user_record_path(@user_record)
+

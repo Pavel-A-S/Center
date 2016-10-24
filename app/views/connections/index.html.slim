@@ -9,19 +9,19 @@ br
   table.table.table-striped.table-bordered.table-hover
     thead
       tr
-        th
+        th.text-center
           = t(:connection_name)
-        th
+        th.text-center
           = t(:connection_login)
-        th
+        th.text-center
           = t(:connection_identifier)
-        th
+        th.text-center
           = t(:connection_description)
-        th
+        th.text-center
           = t(:connection_frequency)
-        th
+        th.text-center
           = t(:connection_time_out)
-        th
+        th.text-center
           = t(:connection_update_me)
         th
         th
@@ -42,7 +42,7 @@ br
           td
             = connection.time_out
           td
-            = connection.update_me
+            = t("connection_update_me_#{connection.update_me.to_s}")
           td
             = link_to t(:show), connection
           td

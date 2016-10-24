@@ -11,12 +11,13 @@ br
   table.table.table-striped.table-bordered.table-hover#user-sources-table.no_scroll
     thead
       tr
-        th
+        th.text-center
           = t(:user_email)
-        th
+        th.text-center
           = t(:user_name)
-        th
+        th.text-center
           = t(:user_role)
+        th
         th
         th
     tbody
@@ -27,7 +28,9 @@ br
           td
             = user.name
           td
-            = user.role
+            = t("#{user.role}")
+          td
+            = link_to t(:show), user
           td
             = link_to t(:edit), edit_user_path(user) 
           td

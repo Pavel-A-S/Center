@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :car_records
+  resources :user_records
+  resources :event_records
   resources :ports
 
   resources :locations do

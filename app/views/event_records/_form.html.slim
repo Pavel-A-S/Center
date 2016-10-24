@@ -1,0 +1,17 @@
+- if not @event_record.blank?
+  = form_for @event_record do |f|
+    - if @event_record.errors.any?
+      #error_explanation
+        h2 = "#{t(:you_have_errors)}: #{@event_record.errors.count}"
+        ul
+          - @event_record.errors.full_messages.each do |message|
+            li = message
+    .form-group
+      = f.label :date, t(:event_record_date)
+      br
+      = f.datetime_select :date, default: DateTime.now, class: 'form-control'
+    .form-group
+      = f.label :description, t(:event_record_description)
+      = f.text_area :description, class: 'form-control'
+
+    = f.submit t(:confirm), class: 'btn btn-primary'

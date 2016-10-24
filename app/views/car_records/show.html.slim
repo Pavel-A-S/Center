@@ -1,0 +1,60 @@
+- if not @car_record.blank?
+  .panel.panel-default.car_record_show_size
+    .panel-heading
+      h3.panel-title
+        b = t(:car_record)
+    .panel-body
+      i = t(:car_record_date)
+      br
+      b = @car_record.date.strftime("%H:%M:%S %d.%m.%Y")
+      hr
+      i = t(:car_record_full_name)
+      br
+      b = "#{@car_record.last_name} #{@car_record.first_name} #{@car_record \
+                                                                .middle_name}"
+      hr
+      i = t(:car_record_document_type)
+      br
+      b = @car_record.document_type
+      hr
+      i = t(:car_record_document_number)
+      br
+      b = @car_record.document_number
+      hr
+      i = t(:car_record_date_of_issue)
+      br
+      b = @car_record.date_of_issue.strftime("%d.%m.%Y")
+      hr
+      i = t(:car_record_document_description)
+      br
+      b = @car_record.document_description
+      hr
+      i = t(:car_record_number)
+      br
+      b = @car_record.car_number
+      hr
+      i = t(:car_record_model)
+      br
+      b = @car_record.car_model
+      hr
+      i = t(:car_record_cargo)
+      br
+      b = @car_record.cargo
+      hr
+      i = t(:car_record_initiator)
+      br
+      b = @car_record.initiator
+      hr
+      i = t(:car_record_description)
+      br
+      b = @car_record.description
+      hr
+      i = t(:car_record_created_by)
+      br
+      b = @car_record.user.try(:name)
+      hr
+      div.car_record_show_footer
+        = link_to t(:car_records), car_records_path
+        = ' | '
+        = link_to t(:edit), edit_car_record_path(@car_record)
+

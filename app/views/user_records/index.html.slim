@@ -1,0 +1,37 @@
+= link_to new_user_record_path, class: 'btn btn-primary' do
+  span.glyphicon.glyphicon-plus
+  = t(:create_user_record)
+br
+br
+
+.table-responsive
+  table.table.table-striped.table-bordered.table-hover
+    thead
+      tr
+        th.text-center
+          = t(:user_record_date)
+        th.text-center
+          = t(:user_record_full_name)
+        th.text-center
+          = t(:user_record_initiator)
+        th.text-center
+          = t(:user_record_created_by)
+        th.text-center
+    tbody
+      - @user_records.each do |u|
+        tr
+          td
+            = u.date.strftime("%H:%M:%S %d.%m.%Y")
+          td
+            = "#{u.last_name} #{u.first_name} #{u.middle_name}"
+          td
+            = u.initiator
+          td
+            = u.user.try(:name)
+          td
+            = link_to t(:show), u
+            hr.user_record_hr
+            = link_to t(:edit), edit_user_record_path(u)
+            hr.user_record_hr
+            = link_to t(:delete), u, data: { confirm: t(:delete_confirmation) },
+                                      method: :delete

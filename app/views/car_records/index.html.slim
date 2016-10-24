@@ -1,0 +1,45 @@
+= link_to new_car_record_path, class: 'btn btn-primary' do
+  span.glyphicon.glyphicon-plus
+  = t(:create_car_record)
+br
+br
+
+.table-responsive
+  table.table.table-striped.table-bordered.table-hover
+    thead
+      tr
+        th.text-center
+          = t(:car_record_date)
+        th.text-center
+          = t(:car_record_full_name)
+        th.text-center
+          = t(:car_record_number)
+        th.text-center
+          = t(:car_record_model)
+        th.text-center
+          = t(:car_record_initiator)
+        th.text-center
+          = t(:car_record_created_by)
+        th.text-center
+    tbody
+      - @car_records.each do |c|
+        tr
+          td
+            = c.date.strftime("%H:%M:%S %d.%m.%Y")
+          td
+            = "#{c.last_name} #{c.first_name} #{c.middle_name}"
+          td
+            = c.car_number
+          td
+            = c.car_model
+          td
+            = c.initiator
+          td
+            = c.user.try(:name)
+          td
+            = link_to t(:show), c
+            hr.car_record_hr
+            = link_to t(:edit), edit_car_record_path(c)
+            hr.car_record_hr
+            = link_to t(:delete), c, data: { confirm: t(:delete_confirmation) },
+                                      method: :delete

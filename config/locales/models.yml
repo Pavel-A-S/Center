@@ -20,6 +20,29 @@ ru:
       port:
         name: "Название"
         order_index: "Приоритет отображения"
+      event_record:
+        description: "Описание"
+      user_record:
+        last_name: "Фамилия"
+        first_name: "Имя"
+        middle_name: "Отчество"
+        document_type: "Тип документа"
+        document_number: "Номер документа"
+        document_description: "Дополнительная информация о документе"
+        initiator: "Инициатор"
+        description: "Описание"
+      car_record:
+        last_name: "Фамилия"
+        first_name: "Имя"
+        middle_name: "Отчество"
+        document_type: "Тип документа"
+        document_number: "Номер документа"
+        document_description: "Дополнительная информация о документе"
+        car_number: "Номер автомобиля"
+        car_model: "Модель автомобиля"
+        cargo: "Описание груза"
+        initiator: "Инициатор"
+        description: "Описание"
 
     errors:
       models:
@@ -77,7 +100,90 @@ ru:
               not_a_number: "- нужно указать (проверьте значение)."
               less_than: "- должен быть меньше"
               greater_than: "- должен быть больше"
-
+        event_record:
+          attributes:
+            description:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 1000 символов максимум"
+        user_record:
+          attributes:
+            last_name:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 100 символов максимум"
+            first_name:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 100 символов максимум"
+            middle_name:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 100 символов максимум"
+            document_type:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 100 символов максимум"
+            document_number:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 100 символов максимум"
+            document_description:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 1000 символов максимум"
+            initiator:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 500 символов максимум"
+            description:
+              too_long:
+                other: "- 1000 символов максимум"
+        car_record:
+          attributes:
+            last_name:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 100 символов максимум"
+            first_name:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 100 символов максимум"
+            middle_name:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 100 символов максимум"
+            document_type:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 100 символов максимум"
+            document_number:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 100 символов максимум"
+            document_description:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 1000 символов максимум"
+            car_number:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 100 символов максимум"
+            car_model:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 300 символов максимум"
+            cargo:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 10000 символов максимум"
+            initiator:
+              blank: "- нужно указать."
+              too_long:
+                other: "- 500 символов максимум"
+            description:
+              too_long:
+                other: "- 1000 символов максимум"
       messages:
         record_invalid: "данные не прошли валидацию"
 en:
@@ -102,7 +208,29 @@ en:
       port:
         name: "Name"
         order_index: "Display priority"
-
+      event_record:
+        description: "Description"
+      user_record:
+        last_name: "Last name"
+        first_name: "First name"
+        middle_name: "Middle name"
+        document_type: "Document type"
+        document_number: "Document number"
+        document_description: "Document description"
+        initiator: "Initiator"
+        description: "Description"
+      car_record:
+        last_name: "Last name"
+        first_name: "First name"
+        middle_name: "Middle name"
+        document_type: "Document type"
+        document_number: "Document number"
+        document_description: "Document description"
+        car_number: "Car number"
+        car_model: "Car model"
+        cargo: "Cargo description"
+        initiator: "Initiator"
+        description: "Description"
 
     errors:
       models:
@@ -160,7 +288,90 @@ en:
               not_a_number: "must be present. (check value)."
               less_than: "must be less"
               greater_than: "must be more"
-
+        event_record:
+          attributes:
+            description:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 1000 symbols maximum."
+        user_record:
+          attributes:
+            last_name:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 100 symbols maximum."
+            first_name:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 100 symbols maximum."
+            middle_name:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 100 symbols maximum."
+            document_type:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 100 symbols maximum."
+            document_number:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 100 symbols maximum."
+            document_description:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 1000 symbols maximum."
+            initiator:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 500 symbols maximum."
+            description:
+              too_long:
+                other: "too long - 1000 symbols maximum."
+        car_record:
+          attributes:
+            last_name:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 100 symbols maximum."
+            first_name:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 100 symbols maximum."
+            middle_name:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 100 symbols maximum."
+            document_type:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 100 symbols maximum."
+            document_number:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 100 symbols maximum."
+            document_description:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 1000 symbols maximum."
+            car_number:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 100 symbols maximum."
+            car_model:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 300 symbols maximum."
+            cargo:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 10000 symbols maximum."
+            initiator:
+              blank: "- must be present."
+              too_long:
+                other: "too long - 500 symbols maximum."
+            description:
+              too_long:
+                other: "too long - 1000 symbols maximum."
       messages:
         record_invalid: "data isn't valid"
 

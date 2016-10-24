@@ -20,7 +20,7 @@ class LocationsController < ApplicationController
 
     if @locations
       @excepted_port = Port.port_types['temperature_chart']
-      @ports_ids = Port.where(connection_id: @locations)
+      @ports_ids = Port.where(location_id: @locations)
                        .where.not(port_type: @excepted_port)
                        .pluck(:id)
     end

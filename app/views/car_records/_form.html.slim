@@ -1,0 +1,51 @@
+- if not @car_record.blank?
+  = form_for @car_record do |f|
+    - if @car_record.errors.any?
+      #error_explanation
+        h2 = "#{t(:you_have_errors)}: #{@car_record.errors.count}"
+        ul
+          - @car_record.errors.full_messages.each do |message|
+            li = message
+    .form-group
+      = f.label :date, t(:car_record_date)
+      br
+      = f.datetime_select :date, default: DateTime.now, class: "form-control"
+    .form-group
+      = f.label :last_name, t(:car_record_last_name)
+      = f.text_field :last_name, class: "form-control"
+    .form-group
+      = f.label :first_name, t(:car_record_first_name)
+      = f.text_field :first_name, class: "form-control"
+    .form-group
+      = f.label :middle_name, t(:car_record_middle_name)
+      = f.text_field :middle_name, class: "form-control"
+    .form-group
+      = f.label :initiator, t(:car_record_initiator)
+      = f.text_field :initiator, class: "form-control"
+    .form-group
+      = f.label :document_type, t(:car_record_document_type)
+      = f.text_field :document_type, class: "form-control"
+    .form-group
+      = f.label :document_number, t(:car_record_document_number)
+      = f.text_field :document_number, class: "form-control"
+    .form-group
+      = f.label :date_of_issue, t(:car_record_date_of_issue)
+      br
+      = f.date_select :date_of_issue, start_year: 1800, class: "form-control"
+    .form-group
+      = f.label :document_description, t(:car_record_document_description)
+      = f.text_area :document_description, class: "form-control"
+    .form-group
+      = f.label :car_number, t(:car_record_number)
+      = f.text_field :car_number, class: "form-control"
+    .form-group
+      = f.label :car_model, t(:car_record_model)
+      = f.text_field :car_model, class: "form-control"
+    .form-group
+      = f.label :cargo, t(:car_record_cargo)
+      = f.text_area :cargo, class: "form-control"
+    .form-group
+      = f.label :description, t(:car_record_description)
+      = f.text_area :description, class: "form-control"
+
+    = f.submit t(:confirm), class: 'btn btn-primary'

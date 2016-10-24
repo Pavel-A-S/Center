@@ -51,7 +51,7 @@
           = t(:connection_update_me)
         br
         dd
-          = @connection.update_me
+          = t("connection_update_me_#{@connection.update_me.to_s}")
         br
         = link_to t(:connections), connections_path
         = ' | '

@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  date: 2016-10-24 05:35:04
+  first_name: MyString
+  middle_name: MyString
+  last_name: MyString
+  initiator: MyString
+  document_type: MyString
+  document_number: MyString
+  date_of_issue: 2016-10-24
+  document_description: MyText
+  description: MyText
+
+two:
+  date: 2016-10-24 05:35:04
+  first_name: MyString
+  middle_name: MyString
+  last_name: MyString
+  initiator: MyString
+  document_type: MyString
+  document_number: MyString
+  date_of_issue: 2016-10-24
+  document_description: MyText
+  description: MyText

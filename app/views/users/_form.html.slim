@@ -17,8 +17,8 @@
       = f.text_field :name, class: 'form-control'
     .form-group
       = f.label :role, t(:user_role)
-      = f.select :role, User.roles.keys.map{ |r| [r, r] },
-                        { include_blank: true },
+      = f.select :role, User.roles.keys.map{ |r| [t("#{r}"), r] },
+                        {},
                         { class: 'form-control' }
     .form-group
       = f.label :password

@@ -1,0 +1,42 @@
+- if not @user_record.blank?
+  = form_for @user_record do |f|
+    - if @user_record.errors.any?
+      #error_explanation
+        h2 = "#{t(:you_have_errors)}: #{@user_record.errors.count}"
+        ul
+          - @user_record.errors.full_messages.each do |message|
+            li = message
+    .form-group
+      = f.label :date, t(:user_record_date)
+      br
+      = f.datetime_select :date, default: DateTime.now, class: "form-control"
+    .form-group
+      = f.label :last_name, t(:user_record_last_name)
+      = f.text_field :last_name, class: "form-control"
+    .form-group
+      = f.label :first_name, t(:user_record_first_name)
+      = f.text_field :first_name, class: "form-control"
+    .form-group
+      = f.label :middle_name, t(:user_record_middle_name)
+      = f.text_field :middle_name, class: "form-control"
+    .form-group
+      = f.label :initiator, t(:user_record_initiator)
+      = f.text_field :initiator, class: "form-control"
+    .form-group
+      = f.label :document_type, t(:user_record_document_type)
+      = f.text_field :document_type, class: "form-control"
+    .form-group
+      = f.label :document_number, t(:user_record_document_number)
+      = f.text_field :document_number, class: "form-control"
+    .form-group
+      = f.label :date_of_issue, t(:user_record_date_of_issue)
+      br
+      = f.date_select :date_of_issue, start_year: 1800, class: "form-control"
+    .form-group
+      = f.label :document_description, t(:user_record_document_description)
+      = f.text_area :document_description, class: "form-control"
+    .form-group
+      = f.label :description, t(:user_record_description)
+      = f.text_area :description, class: "form-control"
+
+    = f.submit t(:confirm), class: 'btn btn-primary'

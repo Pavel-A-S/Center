@@ -11,7 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161021020620) do
+ActiveRecord::Schema.define(version: 20161024023504) do
+
+  create_table "car_records", force: :cascade do |t|
+    t.datetime "date"
+    t.string   "first_name",           limit: 255
+    t.string   "middle_name",          limit: 255
+    t.string   "last_name",            limit: 255
+    t.string   "initiator",            limit: 255
+    t.string   "document_type",        limit: 255
+    t.string   "document_number",      limit: 255
+    t.date     "date_of_issue"
+    t.text     "document_description", limit: 65535
+    t.string   "car_number",           limit: 255
+    t.string   "car_model",            limit: 255
+    t.text     "cargo",                limit: 65535
+    t.text     "description",          limit: 65535
+    t.integer  "user_id",              limit: 4
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
 
   create_table "connections", force: :cascade do |t|
     t.string   "name",        limit: 255
@@ -24,6 +43,14 @@ ActiveRecord::Schema.define(version: 20161021020620) do
     t.boolean  "update_me"
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
+  end
+
+  create_table "event_records", force: :cascade do |t|
+    t.integer  "user_id",     limit: 4
+    t.text     "description", limit: 65535
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.datetime "date"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -112,6 +139,22 @@ ActiveRecord::Schema.define(version: 20161021020620) do
     t.text     "full_message",          limit: 65535
     t.datetime "created_at",                                                   null: false
     t.datetime "updated_at",                                                   null: false
+  end
+
+  create_table "user_records", force: :cascade do |t|
+    t.datetime "date"
+    t.string   "first_name",           limit: 255
+    t.string   "middle_name",          limit: 255
+    t.string   "last_name",            limit: 255
+    t.string   "initiator",            limit: 255
+    t.string   "document_type",        limit: 255
+    t.string   "document_number",      limit: 255
+    t.date     "date_of_issue"
+    t.text     "document_description", limit: 65535
+    t.text     "description",          limit: 65535
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.integer  "user_id",              limit: 4
   end
 
   create_table "users", force: :cascade do |t|

@@ -132,10 +132,84 @@ body {
   width: 600px;
 }
 
+.location_hr {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+}
+
 .wrapper_for_sensors {
 
 }
 
+.event_record_form_wrapper {
+  display: inline-block;
+  width: 600px;
+  margin: 15px auto 50px auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  color: black;
+  background-color: #fafafa;
+}
+
+.event_record_show_size {
+  display: inline-block;
+  width: 600px;
+}
+
+.event_record_show_footer {
+  text-align: center;
+}
+
+.user_record_form_wrapper {
+  display: inline-block;
+  width: 600px;
+  margin: 15px auto 50px auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  color: black;
+  background-color: #fafafa;
+}
+
+.user_record_show_size {
+  display: inline-block;
+  width: 600px;
+}
+
+.user_record_show_footer {
+  text-align: center;
+}
+
+.user_record_hr {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+}
+
+.car_record_form_wrapper {
+  display: inline-block;
+  width: 600px;
+  margin: 15px auto 50px auto;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  color: black;
+  background-color: #fafafa;
+}
+
+.car_record_show_size {
+  display: inline-block;
+  width: 600px;
+}
+
+.car_record_show_footer {
+  text-align: center;
+}
+
+.car_record_hr {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+}
 
 //.navbar_color {
 //  background-color: #d9edf7;

@@ -8,14 +8,12 @@ br
   table.table.table-striped.table-bordered.table-hover
     thead
       tr
-        th
+        th.text-center
           = t(:location_name)
-        th
+        th.text-center
           = t(:location_description)
-        th
+        th.text-center
           = t(:location_access)
-        th
-        th
         th
     tbody
       - @locations.each do |location|
@@ -28,7 +26,7 @@ br
             = t("#{location.access}") if location.access
           td
             = link_to t(:show), location
-          td
+            hr.location_hr
             = link_to t(:edit), edit_location_path(location)
-          td
+            hr.location_hr
             = link_to t(:delete), location, data: { confirm: t(:delete_confirmation) }, method: :delete

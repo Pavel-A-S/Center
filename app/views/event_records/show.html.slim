@@ -1,0 +1,23 @@
+- if not @event_record.blank?
+  .panel.panel-default.event_record_show_size
+    .panel-heading
+      h3.panel-title
+        b = t(:event_record)
+    .panel-body
+      i = t(:event_record_date)
+      br
+      b = @event_record.date.strftime("%H:%M:%S %d.%m.%Y")
+      hr
+      i = t(:event_record_description)
+      br
+      b = @event_record.description
+      hr
+      i = t(:event_record_created_by)
+      br
+      b = @event_record.user.try(:name)
+      hr
+      div.user_record_show_footer
+        = link_to t(:event_records), event_records_path
+        = ' | '
+        = link_to t(:edit), edit_event_record_path(@event_record)
+

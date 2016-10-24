@@ -1,0 +1,9 @@
+- if not @event_record.blank?
+  .event_record_form_wrapper
+    h3 = t(:editing_event_record)
+    br
+    == render 'form'
+    br
+    = link_to t(:show), @event_record
+    = " | "
+    = link_to t(:back), event_records_path
