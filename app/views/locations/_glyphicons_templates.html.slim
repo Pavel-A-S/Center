@@ -43,3 +43,8 @@
 
     div class="port_picture_wrapper alert alert-info" id="#{port.location_id}_#{port.id}"
       span.glyphicon.glyphicon-flash
+
+  - if port.door_lock?
+
+    div class="port_picture_wrapper alert alert-info" id="#{port.location_id}_#{port.id}"
+      span.glyphicon.glyphicon-lock

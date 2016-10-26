@@ -20,9 +20,11 @@ class Daemon
     @controller_identifier = data[:controller_identifier]
     @login = data[:login] # Controller
     @password = data[:password] # Controller
-    @frequency = data[:frequency] # For Daemon
-    @table_name = data[:table_name] # Input Table
-    @log_table_name = data[:log_table_name] # Events Table
+    @frequency = data[:frequency] # For daemon
+    @table_name = data[:table_name] # Input table
+    @log_table_name = data[:log_table_name] # Events log table
+    # Connections log table
+    @connections_log_table_name = data[:connections_log_table_name]
 
     # Catch exit signal
     Signal.trap("QUIT") do
@@ -46,6 +48,14 @@ class Daemon
       message = response.body
       { json: JSON.parse(message), raw_data: message }
     rescue
+
+      # Write in connections log
+      begin
+        to_connections_log("HTTP error")
+      rescue
+        to_log("Can't write in log that connection to controller is lost")
+      end
+
       to_log("Error: HTTP")
       'nope'
     end
@@ -158,10 +168,11 @@ class Daemon
     set_data = @client.query(command)
   end
 
-  def to_events(event_type, description, event_id = nil)
+  def to_events(event_type, description, event_id)
     array_of_columns = [
       "created_at",
       "updated_at",
+      "event_id",
       "connection_id",
       "controller_identifier",
       "event_type",
@@ -171,16 +182,12 @@ class Daemon
     values = [
       created_at = Time.now.utc.strftime('%Y-%m-%d %H:%M:%S'),
       updated_at = Time.now.utc.strftime('%Y-%m-%d %H:%M:%S'),
+      event_id,
       @connection_id,
       @controller_identifier,
       event_type,
       description
     ]
-
-    if event_id
-      array_of_columns << "event_id"
-      values << event_id
-    end
 
     columns = array_of_columns.join(", ")
 
@@ -188,7 +195,34 @@ class Daemon
                                  .join("', '") + "'"
 
     command = "INSERT INTO #{@log_table_name} (#{columns}) "\
-                         "VALUES (#{escaped_values})"
+                      "VALUES (#{escaped_values})"
+    set_data = @client.query(command)
+  end
+
+  def to_connections_log(message)
+    array_of_columns = [
+      "created_at",
+      "updated_at",
+      "connection_id",
+      "controller_identifier",
+      "message"
+    ]
+
+    values = [
+      created_at = Time.now.utc.strftime('%Y-%m-%d %H:%M:%S'),
+      updated_at = Time.now.utc.strftime('%Y-%m-%d %H:%M:%S'),
+      @connection_id,
+      @controller_identifier,
+      message
+    ]
+
+    columns = array_of_columns.join(", ")
+
+    escaped_values = "'" + values.map{ |v| @client.escape(v.to_s) }
+                                 .join("', '") + "'"
+
+    command = "INSERT INTO #{@connections_log_table_name} (#{columns}) "\
+                     "VALUES (#{escaped_values})"
     set_data = @client.query(command)
   end
 
@@ -275,13 +309,6 @@ class Daemon
 
       else
         to_log("Error: Can't get data")
-
-        # Write
-        begin
-          to_events('connection', 'lost')
-        rescue
-          to_log("Can't write to log that connection to controller is lost")
-        end
       end
 
       to_log("OK: Go to sleep #{@frequency} sec")
@@ -325,6 +352,7 @@ $stderr.reopen(@errors_log, "a")
 @database = "center_database"
 @table_name = "records"
 @log_table_name = "logs"
+@connections_log_table_name = "connection_logs"
 @connection_table = "connections"
 
 #------------------------------- Main Program ----------------------------------
@@ -413,6 +441,7 @@ loop do
           frequency: r['frequency'],
           table_name: @table_name,
           log_table_name: @log_table_name,
+          connections_log_table_name: @connections_log_table_name,
           connection_id: r['id'],
           controller_identifier: r['identifier'],
           log_path: logs_path + r['identifier'] + ".log"

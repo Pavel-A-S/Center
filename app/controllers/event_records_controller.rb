@@ -3,7 +3,7 @@ class EventRecordsController < ApplicationController
   before_action :must_be_security_or_administrator
 
   def index
-    @event_records = EventRecord.all
+    @event_records = EventRecord.order(created_at: :desc)
   end
 
   def show

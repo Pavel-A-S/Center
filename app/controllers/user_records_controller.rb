@@ -3,7 +3,7 @@ class UserRecordsController < ApplicationController
   before_action :must_be_security_or_administrator
 
   def index
-    @user_records = UserRecord.all
+    @user_records = UserRecord.order(created_at: :desc)
   end
 
   def show

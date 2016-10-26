@@ -1,6 +1,7 @@
 - if ports
   - ports.each do |p|
-    - if p.port_type == 'temperature_sensor'
+    - if ['temperature_sensor', 'reed_switch', 'motion_sensor', 'leak_sensor',
+          'connection_checker', 'smoke_sensor'].include?(p.port_type)
       div class="plate"
         div class="panel panel-info"
           div class="panel-heading"
@@ -8,7 +9,7 @@
               = p.name
           div class="panel-body" id="port_#{p.id}"
             | no data
-    - if p.port_type == 'reed_switch'
+    - if p.port_type == 'switch' || p.port_type == 'arming_switch'
       div class="plate"
         div class="panel panel-info"
           div class="panel-heading"
@@ -16,43 +17,12 @@
               = p.name
           div class="panel-body" id="port_#{p.id}"
             | no data
-    - if p.port_type == 'motion_sensor'
-      div class="plate"
-        div class="panel panel-info"
-          div class="panel-heading"
-            h3 class="panel-title"
-              = p.name
-          div class="panel-body" id="port_#{p.id}"
-            | no data
-    - if p.port_type == 'leak_sensor'
-      div class="plate"
-        div class="panel panel-info"
-          div class="panel-heading"
-            h3 class="panel-title"
-              = p.name
-          div class="panel-body" id="port_#{p.id}"
-            | no data
-    - if p.port_type == 'switch'
-      div class="plate"
-        div class="panel panel-info"
-          div class="panel-heading"
-            h3 class="panel-title"
-              = p.name
-          div class="panel-body" id="port_#{p.id}"
-            | no data
-          div class="btn btn-primary port_button" id="button_#{p.id.to_s}"
-            span.glyphicon.glyphicon-plus.port_button_glyphicon id="button_text_#{p.id}"
+          div class="btn btn-primary port_button" id="button_#{p.id}"
+            span.glyphicon.glyphicon-plus.port_button_glyphicon
+            span id="button_text_#{p.id}" class="port_button_text"
               | no data
           br
           br
-    - if p.port_type == 'connection_checker'
-      div class="plate"
-        div class="panel panel-info"
-          div class="panel-heading"
-            h3 class="panel-title"
-              = p.name
-          div class="panel-body" id="port_#{p.id}"
-            | no data
     - if p.port_type == 'temperature_chart'
       div id="port_#{p.id}"
 

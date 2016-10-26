@@ -58,6 +58,8 @@ class PortsController < ApplicationController
                                                         :connection_id,
                                                         :icon,
                                                         :description,
-                                                        :access)
+                                                        :access,
+                                                        :before_warning,
+                                                        :before_alert)
     end
 end

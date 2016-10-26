@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161024023504) do
+ActiveRecord::Schema.define(version: 20161026074021) do
 
   create_table "car_records", force: :cascade do |t|
     t.datetime "date"
@@ -30,6 +30,14 @@ ActiveRecord::Schema.define(version: 20161024023504) do
     t.integer  "user_id",              limit: 4
     t.datetime "created_at",                         null: false
     t.datetime "updated_at",                         null: false
+  end
+
+  create_table "connection_logs", force: :cascade do |t|
+    t.string   "controller_identifier", limit: 255
+    t.integer  "connection_id",         limit: 4
+    t.string   "message",               limit: 255
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
   end
 
   create_table "connections", force: :cascade do |t|
@@ -72,17 +80,19 @@ ActiveRecord::Schema.define(version: 20161024023504) do
   end
 
   create_table "ports", force: :cascade do |t|
-    t.string   "name",          limit: 255
-    t.integer  "port_number",   limit: 4
-    t.integer  "port_type",     limit: 4
-    t.integer  "location_id",   limit: 4
-    t.integer  "connection_id", limit: 4
-    t.text     "description",   limit: 65535
-    t.integer  "order_index",   limit: 4
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
-    t.integer  "icon",          limit: 4
-    t.integer  "access",        limit: 4
+    t.string   "name",           limit: 255
+    t.integer  "port_number",    limit: 4
+    t.integer  "port_type",      limit: 4
+    t.integer  "location_id",    limit: 4
+    t.integer  "connection_id",  limit: 4
+    t.text     "description",    limit: 65535
+    t.integer  "order_index",    limit: 4
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.integer  "icon",           limit: 4
+    t.integer  "access",         limit: 4
+    t.integer  "before_warning", limit: 4
+    t.integer  "before_alert",   limit: 4
   end
 
   create_table "records", force: :cascade do |t|

@@ -24,17 +24,18 @@ br
         th.text-center
           = t(:port_icon)
         th.text-center
+          = t(:port_before_warning)
+        th.text-center
+          = t(:port_before_alert)
+        th.text-center
           = t(:port_description)
         th.text-center
           = t(:port_access)
-        th
-        th
-        th
     tbody
       - @ports.each do |port|
         tr
           td
-            = port.name
+            = link_to port.name, port
           td
             = port.order_index
           td
@@ -48,14 +49,12 @@ br
           td
             = t("#{port.icon}") if !port.icon.blank?
           td
+            = port.before_warning
+          td
+            = port.before_alert
+          td
             = port.description
           td
             = t("#{port.access}") if !port.access.blank?
-          td
-            = link_to t(:show), port
-          td
-            = link_to t(:edit), edit_port_path(port)
-          td
-            = link_to t(:delete), port, data: { confirm: t(:delete_confirmation) }, method: :delete
 
 

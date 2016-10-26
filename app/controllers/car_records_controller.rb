@@ -3,7 +3,7 @@ class CarRecordsController < ApplicationController
   before_action :must_be_security_or_administrator
 
   def index
-    @car_records = CarRecord.all
+    @car_records = CarRecord.order(created_at: :desc)
   end
 
   def show

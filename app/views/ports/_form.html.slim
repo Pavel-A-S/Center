@@ -38,6 +38,15 @@
       = f.select :icon, Port.icons.keys.map{ |i| [t("#{i}"), i] }, {},
                         { class: 'form-control' }
     .form-group
+      = f.label :before_warning, t(:port_before_warning)
+      = f.number_field :before_warning, value: @port.before_warning || 0,
+                                                class: 'form-control'
+    .form-group
+      = f.label :before_alert, t(:port_before_alert)
+      = f.number_field :before_alert, value: @port.before_alert || 0,
+                                              class: 'form-control'
+
+    .form-group
       = f.label :description, t(:port_description)
       = f.text_area :description, class: 'form-control'
 

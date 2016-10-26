@@ -26,6 +26,8 @@ function trigger(ports_parameters, url, e, location) {
     var button_id = e.target.id;
   } else if ($(e.target).hasClass('port_button_glyphicon')) {
     var button_id = $(e.target).parent().attr('id');
+  } else if ($(e.target).hasClass('port_button_text')) {
+    var button_id = $(e.target).parent().attr('id');
   }
 
   // If button is pressed
@@ -81,21 +83,24 @@ function mapData(answer, location) {
       var p = answer.ports_parameters[i];
       var id = p.port_id;
       var type = p.port_type;
+
+      var common_port = ['reed_switch',
+                         'motion_sensor',
+                         'smoke_sensor',
+                         'leak_sensor'].indexOf(type)
+
       if (location == 'page') {
         var info = 'panel-info';
         var danger = 'panel-danger';
+        var warning = 'panel-warning';
         var success = 'panel-success';
         var target = $('#port_' + id).parent();
 
         if (type == 'temperature_sensor') {
           $('#port_' + id).text(p.temperature).append(' &deg;C');
-        } else if (type == 'reed_switch') {
+        } else if (common_port != -1) {
           $('#port_' + id).text(p.text);
-        } else if (type == 'motion_sensor') {
-          $('#port_' + id).text(p.text);
-        } else if (type == 'leak_sensor') {
-          $('#port_' + id).text(p.text);
-        } else if (type == 'switch') {
+        } else if (type == 'switch' || type == 'arming_switch') {
           $('#port_' + id).text(p.text);
           $('#button_text_' + id).text(p.button_text);
         } else if (type == 'temperature_chart') {
@@ -108,6 +113,7 @@ function mapData(answer, location) {
         var target = $('#' + p.location_id + '_' + id);
         var info = 'alert-info';
         var danger = 'alert-danger';
+        var warning = 'alert-warning';
         var success = 'alert-success';
       }
 
@@ -115,12 +121,14 @@ function mapData(answer, location) {
                                        'motion_sensor',
                                        'temperature_sensor',
                                        'leak_sensor',
+                                       'smoke_sensor',
                                        'connection_checker'].indexOf(type)
 
-      var accepted_for_success_state = ['switch'].indexOf(type)
+      var accepted_for_success_state = ['switch', 'arming_switch'].indexOf(type)
 
       // Select panels for highlighting
-      if (p.state == 1 && accepted_for_danger_state != -1) {
+      if ((p.color == 'danger' || p.state == 1) &&
+          accepted_for_danger_state != -1 && p.type != 'connection_checker') {
         if (danger_panels.indexOf(p.location_id) == -1) {
           danger_panels[i] = p.location_id;
         }
@@ -132,13 +140,22 @@ function mapData(answer, location) {
 
       // Change color
       if (p.state == 1 && accepted_for_danger_state != -1) {
-        target.removeClass(info).addClass(danger);
+        target.removeClass(info).removeClass(warning).addClass(danger);
       } else if (p.state == 1 && accepted_for_success_state != -1) {
-        target.removeClass(info).addClass(success);
+        target.removeClass(info).removeClass(warning).addClass(success);
       } else if (p.state == 0 && accepted_for_danger_state != -1) {
-        target.removeClass(danger).addClass(info);
+        target.removeClass(danger).removeClass(warning).addClass(info);
       } else if (p.state == 0 && accepted_for_success_state != -1) {
-        target.removeClass(success).addClass(info);
+        target.removeClass(success).removeClass(warning).addClass(info);
+      }
+
+      // Change color if timeout
+      if ((p.state != 1 ||
+          (p.state == 1 && accepted_for_success_state != -1)) &&
+          p.color == 'warning') {
+        target.removeClass(info).removeClass(danger).addClass(warning);
+      } else if (p.color == 'danger') {
+        target.removeClass(info).removeClass(warning).addClass(danger);
       }
     }
 

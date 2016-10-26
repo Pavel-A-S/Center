@@ -48,6 +48,18 @@
           = t("#{@port.icon}") if @port.icon
         br
         dt
+          = t(:port_before_warning)
+        br
+        dd
+          = @port.before_warning
+        br
+        dt
+          = t(:port_before_alert)
+        br
+        dd
+          = @port.before_alert
+        br
+        dt
           = t(:port_description)
         br
         dd
@@ -62,4 +74,7 @@
         = link_to t(:ports), ports_path
         = ' | '
         = link_to t(:edit), edit_port_path(@port)
+        = ' | '
+        = link_to t(:delete), @port, data: { confirm: t(:delete_confirmation) },
+                                    method: :delete
 
