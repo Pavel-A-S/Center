@@ -69,11 +69,9 @@ class CommandsController < ApplicationController
           state = 0
         end
 
-        # Create command
-        command = '{"Command":"SetOutputState","Number":' + real_port_number +
-                                             ',"State":' + state + '}'
-        return command
-
+        # Return command
+        '{"Command":"SetOutputState","Number":' + real_port_number.to_s +
+                                   ',"State":' + state.to_s + '}'
       elsif port.arming_switch?
 
         # Set variables
@@ -89,12 +87,8 @@ class CommandsController < ApplicationController
           new_data[partition_number] = 'Disarm'
         end
 
-        # Create command
-        command = '{"Command":"SetPartitionsState","State":' +
-                  new_data.to_json +
-                  '}'
-        return command
-
+        # Return command
+        '{"Command":"SetPartitionsState","State":' + new_data.to_json + '}'
       else
         return 'nothing'
       end
@@ -200,6 +194,8 @@ class CommandsController < ApplicationController
         'chart'
       elsif ['connection_checker'].include?(type)
         'checker'
+      elsif ['controller_log'].include?(type)
+        'log'
       else
         'undefined'
       end
@@ -224,11 +220,36 @@ class CommandsController < ApplicationController
       return color
     end
 
+
+    def translate_message(record, port)
+      if record.event_type == 'Arm'
+        data = JSON.parse(record.description)
+        message = t(:partition_arm_on) + data['Partition'].to_s
+      elsif record.event_type == 'Disarm'
+        data = JSON.parse(record.description)
+        message = t(:partition_arm_off) + data['Partition'].to_s
+      elsif record.event_type == 'InputActive'
+        data = JSON.parse(record.description)
+
+        ports = Port.where(port_number: data['Number'],
+                           location_id: port.location_id,
+                           access: Port.accesses[port.access])
+        accepted_ports = ports.select { |p| port_group(p.port_type) == 'input' }
+
+        names = accepted_ports.map { |p| p.name }
+
+        message = t(:input_alert) + names.join("; ") + '.'
+      else
+        record.description
+      end
+    end
+
     def get_data(connection_id, ports)
 
       # Select last record only one time
       if !(ports.all? { |x| port_group(x.port_type) == 'chart' ||
-                            port_group(x.port_type) == 'checker'})
+                            port_group(x.port_type) == 'checker' ||
+                            port_group(x.port_type) == 'log' })
         data = Record.where(connection_id: connection_id).try(:last)
       end
       output = []
@@ -277,13 +298,29 @@ class CommandsController < ApplicationController
             local_time = "No data"
             created_at = "No data"
           end
+        elsif port_group(p.port_type) == 'log'
+          log = Log.order(created_at: :desc).last(25)
+          records = [{ created_at: CGI::escapeHTML(t(:created_at)),
+                       event_id: CGI::escapeHTML(t(:event_id)),
+                       event_type: CGI::escapeHTML(t(:event_type)),
+                       description: CGI::escapeHTML(t(:description)) }]
+          log.each do |r|
+          time = r.created_at + Time.now.utc_offset
+          description = translate_message(r, p)
+          records << { created_at: time.strftime("%H:%M:%S %d.%m.%y"),
+                       event_id: CGI::escapeHTML(r.event_id.to_s),
+                       event_type: CGI::escapeHTML(r.event_type),
+                       description: CGI::escapeHTML(description) }
+          end
         end
 
         # Prepare answer depending on port type
         if (data && !(port_group(p.port_type) == 'chart' ||
-                      port_group(p.port_type) == 'checker')) ||
+                      port_group(p.port_type) == 'checker' ||
+                      port_group(p.port_type) == 'log')) ||
            (chart_data && port_group(p.port_type) == 'chart') ||
-           (created_at && port_group(p.port_type) == 'checker')
+           (created_at && port_group(p.port_type) == 'checker') ||
+           (records && port_group(p.port_type) == 'log')
 
           case p.port_type
           when 'temperature_sensor'
@@ -383,6 +420,11 @@ class CommandsController < ApplicationController
             output << { state: state,
                         location_id: p.location_id,
                         created_at: local_time,
+                        port_type: p.port_type,
+                        port_id: p.id }
+          when 'controller_log'
+            output << { location_id: p.location_id,
+                        records: records,
                         port_type: p.port_type,
                         port_id: p.id }
           end

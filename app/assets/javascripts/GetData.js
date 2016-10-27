@@ -107,6 +107,31 @@ function mapData(answer, location) {
           var a = MyChart(p.chart_data, id);
         } else if (type == 'connection_checker') {
           $('#port_' + id).text(p.created_at);
+        } else if (type == 'controller_log') {
+          $('#port_' + id).empty();
+          var simpleHtml = '<thead><tr><th>' +
+                           p.records[0].event_id +
+                           '</th><th>' +
+                           p.records[0].created_at +
+                           '</th><th>' +
+                           p.records[0].event_type +
+                           '</th><th>' +
+                           p.records[0].description +
+                           '</th></tr></thead><tbody>';
+          for (var z = 1; z < p.records.length; z++) {
+            simpleHtml = simpleHtml +
+            '<tr><th>' +
+            p.records[z].event_id +
+            '</th><th>' +
+            p.records[z].created_at +
+            '</th><th>' +
+            p.records[z].event_type +
+            '</th><th>' +
+            p.records[z].description +
+            '</th></tr>';
+          }
+            simpleHtml = simpleHtml + '</tbody>';
+          $('#port_' + id).html(simpleHtml);
         }
 
       } else if (location == 'user_index') {
@@ -128,10 +153,13 @@ function mapData(answer, location) {
 
       // Select panels for highlighting
       if ((p.color == 'danger' || p.state == 1) &&
-          accepted_for_danger_state != -1 && p.type != 'connection_checker') {
+        accepted_for_danger_state != -1 &&
+        p.port_type != 'connection_checker') {
+
         if (danger_panels.indexOf(p.location_id) == -1) {
           danger_panels[i] = p.location_id;
         }
+
       } else if (p.state == 0 && accepted_for_danger_state != -1) {
         if (info_panels.indexOf(p.location_id) == -1) {
           info_panels[i] = p.location_id;
@@ -143,10 +171,9 @@ function mapData(answer, location) {
         target.removeClass(info).removeClass(warning).addClass(danger);
       } else if (p.state == 1 && accepted_for_success_state != -1) {
         target.removeClass(info).removeClass(warning).addClass(success);
-      } else if (p.state == 0 && accepted_for_danger_state != -1) {
-        target.removeClass(danger).removeClass(warning).addClass(info);
-      } else if (p.state == 0 && accepted_for_success_state != -1) {
-        target.removeClass(success).removeClass(warning).addClass(info);
+      } else if (p.state == 0) {
+        target.removeClass(danger).removeClass(warning).removeClass(success)
+                                                       .addClass(info);
       }
 
       // Change color if timeout

@@ -26,6 +26,16 @@
     - if p.port_type == 'temperature_chart'
       div id="port_#{p.id}"
 
+    - if p.controller_log?
+      div class="log-plate"
+        div class="panel panel-info"
+          div class="panel-heading"
+            h3 class="panel-title"
+              = p.name
+          div class="panel-body"
+            .table-responsive
+              table.table.table-striped.table-bordered.table-hover id="port_#{p.id}"
+
 
 
 

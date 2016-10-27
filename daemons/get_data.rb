@@ -186,7 +186,7 @@ class Daemon
       @connection_id,
       @controller_identifier,
       event_type,
-      description
+      description.to_json
     ]
 
     columns = array_of_columns.join(", ")
@@ -231,22 +231,15 @@ class Daemon
     # Check if events exist
     if data["Events"].is_a?(Array)
 
-      # Select events type 1 and sort it by ID
-      events_type_1 = data["Events"].select { |h| !h['Number'].nil? }
-                                    .sort_by { |h| h['ID'] }
+      # Sort events by ID
+      events = data["Events"].sort_by { |h| h['ID'] }
 
-      # Select events type 2 and sort it by ID
-      events_type_2 = data["Events"].select { |h| !h['Type'].nil? &&
-                                                  h['Type'] != 'InputPassive' &&
-                                                  h['Type'] != 'InputActive' }
-                                    .sort_by { |h| h['ID'] }
-
-      # Log events type 1
-      events_type_1.each do |e|
+      # Log events
+      events.each do |e|
 
         # Check if record exists
-        event_type = @client.escape(e['Number'].to_s)
-        description = @client.escape(e['Type'].to_s)
+        event_type = @client.escape(e['Type'].to_s)
+        description = @client.escape(e.to_json.to_s)
         command = "SELECT * FROM #{@log_table_name} "\
                   "WHERE event_type='#{event_type}' "\
                   "AND description='#{description}' "\
@@ -255,23 +248,7 @@ class Daemon
 
         # Log if record with such ID doesn't exist in database
         if record.count == 0 || record.first.fetch('event_id') != e['ID']
-          log_answer = to_events(e['Number'], e['Type'], e['ID'])
-        end
-      end
-
-      # Log events type 2
-      events_type_2.each do |e|
-
-        # Check if record exists
-        event_type = @client.escape(e['Type'].to_s)
-        command = "SELECT * FROM #{@log_table_name} "\
-                  "WHERE event_type='#{event_type}' "\
-                  "ORDER BY created_at DESC LIMIT 1"
-        record = @client.query(command)
-
-        # Log if record with such ID doesn't exist in database
-        if record.count == 0 || record.first.fetch('event_id') != e['ID']
-          log_answer = to_events(e['Type'], e['Type'], e['ID'])
+          log_answer = to_events(e['Type'], e, e['ID'])
         end
       end
     end

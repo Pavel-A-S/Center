@@ -140,6 +140,7 @@ ru:
   temperature_chart: "График температуры"
   connection_checker: "Проверка связи"
   smoke_sensor: "Датчик дыма"
+  controller_log: "Журнал оборудования"
   # Icons
   door: "Дверь"
   eye: "Глаз"
@@ -151,6 +152,7 @@ ru:
   fire: "Огонь"
   electricity: "Электричество"
   door_lock: "Замок"
+  journal: "Журнал"
   # Event records
   event_record: "Событие"
   event_records: "События"
@@ -222,10 +224,14 @@ ru:
   car_record_was_not_created: "Пропуск на машину не был создан"
   car_record_was_not_updated: "Пропуск на машину не был обновлён"
   car_record_was_not_deleted: "Пропуск на машину не был удалён"
-
-
-
-
+  # Logs
+  created_at: "Дата"
+  event_id: "Номер"
+  event_type: "Тип"
+  description: "Описание"
+  partition_arm_on: "Постановка на охрану. Периметр "
+  partition_arm_off: "Снятие с охраны. Периметр "
+  input_alert: "Тревога: "
 
 en:
   # Layout
@@ -369,6 +375,7 @@ en:
   temperature_chart: "Temperature chart"
   connection_checker: "Connection checker"
   smoke_sensor: "Smoke sensor"
+  controller_log: "Controller log"
   # Icons
   door: "Door"
   eye: "Eye"
@@ -380,6 +387,7 @@ en:
   fire: "Fire"
   electricity: "Electricity"
   door_lock: "Lock"
+  journal: "Journal"
   # Event records
   event_record: "Event"
   event_records: "Events"
@@ -451,4 +459,11 @@ en:
   car_record_was_not_created: "Car pass wasn't created"
   car_record_was_not_updated: "Car pass wasn't updated"
   car_record_was_not_deleted: "Car pass wasn't deleted"
-
+  # Logs
+  created_at: "Created at"
+  event_id: "Event id"
+  event_type: "Event type"
+  description: "Description"
+  partition_arm_on: "Arming, partition "
+  partition_arm_off: "Disarming, partition "
+  input_alert: "Alert: "
