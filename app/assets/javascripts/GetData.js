@@ -1,24 +1,28 @@
 // Main function which updates data on the page every X seconds
-function getData(ports_parameters, url, location) {
+function getData(ports_parameters, url, location, ports_with_ranges) {
+
+  // Parse ports with ranges
+  var ports = JSON.parse(ports_with_ranges);
 
   // Send to and get data from the server at first time
-  dataRequest(ports_parameters, null, url, location);
+  dataRequest(ports_parameters, null, url, location, null);
 
   // Create repeater for sending to and getting data from the server
-//  if (typeof dataUpdateInterval === 'undefined' ||
-//             dataUpdateInterval === null) {
-    clearInterval(window.dataUpdateInterval);
-    window.dataUpdateInterval = setInterval(function() {
-                                              dataRequest(ports_parameters,
-                                                          null,
-                                                          url,
-                                                          location);
-                                            }, 5000);
-  }
-//}
+  clearInterval(window.dataUpdateInterval);
+  window.dataUpdateInterval = setInterval(function() {
+                                            dataRequest(ports_parameters,
+                                                        null,
+                                                        url,
+                                                        location,
+                                                        ports);
+                                          }, 5000);
+}
 
 // Main function which listens buttons
-function trigger(ports_parameters, url, e, location) {
+function trigger(ports_parameters, url, e, location, ports_with_ranges) {
+
+  // Parse ports with ranges
+  var ports = JSON.parse(ports_with_ranges);
 
   // Determine pressed element
   var button_id = 'undefined';
@@ -38,20 +42,33 @@ function trigger(ports_parameters, url, e, location) {
     $('#' + button_id).attr('data-status', 'await');
 
     // Send data to the server
-    dataRequest(ports_parameters, button_id, url, location);
+    dataRequest(ports_parameters, button_id, url, location, ports);
   }
 }
 
 // Send data to the server
-function dataRequest(ports_parameters, button_id, url, location) {
+function dataRequest(ports_parameters, button_id, url, location,
+                                                       ports_with_ranges) {
+  var ports = ports_with_ranges;
+
+  if (ports != null) {
+    for (var i = 0; i < ports.length; i++) {
+      ports[i][2] = $('#select_' + ports[i][0]).val();
+    }
+  }
 
   // Prepare message
   if (button_id != null) {
     var message = { 'command':'GetData',
+                    'location':location,
                     'ports_parameters':ports_parameters,
+                    'ports_with_ranges':ports,
                     'button_id':button_id }
   } else {
-    var message = { 'command':'GetData', 'ports_parameters':ports_parameters }
+    var message = { 'command':'GetData',
+                    'location':location,
+                    'ports_parameters':ports_parameters,
+                    'ports_with_ranges':ports }
   }
 
   // Send request to the server
@@ -89,6 +106,16 @@ function mapData(answer, location) {
                          'smoke_sensor',
                          'leak_sensor'].indexOf(type)
 
+      var accepted_for_danger_state = ['reed_switch',
+                                       'motion_sensor',
+                                       'temperature_sensor',
+                                       'leak_sensor',
+                                       'smoke_sensor',
+                                       'connection_checker'].indexOf(type)
+
+      var accepted_for_success_state = ['switch', 'arming_switch'].indexOf(type)
+
+      // Data for detailed page
       if (location == 'page') {
         var info = 'panel-info';
         var danger = 'panel-danger';
@@ -104,12 +131,13 @@ function mapData(answer, location) {
           $('#port_' + id).text(p.text);
           $('#button_text_' + id).text(p.button_text);
         } else if (type == 'temperature_chart') {
-          var a = MyChart(p.chart_data, id);
+          var a = MyChart(p.chart_data, id, p.text);
         } else if (type == 'connection_checker') {
           $('#port_' + id).text(p.created_at);
         } else if (type == 'controller_log') {
+          var selected_value = $('#select_' + id).val();
           $('#port_' + id).empty();
-          var simpleHtml = '<thead><tr><th>' +
+          var simpleHtml = "<div class='log_table'><table><thead><tr><th>" +
                            p.records[0].event_id +
                            '</th><th>' +
                            p.records[0].created_at +
@@ -130,53 +158,74 @@ function mapData(answer, location) {
             p.records[z].description +
             '</th></tr>';
           }
-            simpleHtml = simpleHtml + '</tbody>';
+
+          simpleHtml = simpleHtml + '</tbody></table></div>';
           $('#port_' + id).html(simpleHtml);
+
+          simpleHtml = '<select id="select_' + id + '">' +
+                       '<option value="5">5</option>' +
+                       '<option value="10">10</option>' +
+                       '<option value="30">30</option>' +
+                       '<option value="60">60</option>' +
+                       '<option value="100">100</option></select>';
+          $("#port_" + id).append('<b>' + p.text + '</b>&nbsp;');
+          $("#port_" + id).append(simpleHtml);
+          if (selected_value != undefined) {
+            $('#select_' + id).val(selected_value);
+          }
         }
 
+      // Data for main page
       } else if (location == 'user_index') {
         var target = $('#' + p.location_id + '_' + id);
         var info = 'alert-info';
         var danger = 'alert-danger';
         var warning = 'alert-warning';
         var success = 'alert-success';
-      }
 
-      var accepted_for_danger_state = ['reed_switch',
-                                       'motion_sensor',
-                                       'temperature_sensor',
-                                       'leak_sensor',
-                                       'smoke_sensor',
-                                       'connection_checker'].indexOf(type)
-
-      var accepted_for_success_state = ['switch', 'arming_switch'].indexOf(type)
-
-      // Select panels for highlighting
-      if ((p.color == 'danger' || p.state == 1) &&
-        accepted_for_danger_state != -1 &&
-        p.port_type != 'connection_checker') {
-
-        if (danger_panels.indexOf(p.location_id) == -1) {
-          danger_panels[i] = p.location_id;
+        if (type == 'temperature_sensor') {
+          var title = p.temperature + " &deg;C";
+        } else if (common_port != -1) {
+          var title = p.text;
+        } else if (type == 'switch' || type == 'arming_switch') {
+          var title = p.text;
+        } else if (type == 'connection_checker') {
+          var title = target.attr('data-last-connection') + '<br>' +
+                                                            p.created_at;
         }
 
-      } else if (p.state == 0 && accepted_for_danger_state != -1) {
-        if (info_panels.indexOf(p.location_id) == -1) {
-          info_panels[i] = p.location_id;
+        target.tooltip({ 'placement': 'bottom', 'title': title });
+
+        // Select panels for highlighting
+        if ((p.color == 'danger' || p.state == 1) &&
+          accepted_for_danger_state != -1 &&
+          p.port_type != 'connection_checker') {
+
+          if (danger_panels.indexOf(p.location_id) == -1) {
+            danger_panels[i] = p.location_id;
+          }
+
+        } else if (p.state == 0 && accepted_for_danger_state != -1) {
+          if (info_panels.indexOf(p.location_id) == -1) {
+            info_panels[i] = p.location_id;
+          }
         }
       }
 
-      // Change color
+      // Change color of icons on the main page or color of panels on detail
+      // page if state
       if (p.state == 1 && accepted_for_danger_state != -1) {
         target.removeClass(info).removeClass(warning).addClass(danger);
       } else if (p.state == 1 && accepted_for_success_state != -1) {
-        target.removeClass(info).removeClass(warning).addClass(success);
+        target.removeClass(info).removeClass(warning).removeClass(danger)
+                                                     .addClass(success);
       } else if (p.state == 0) {
         target.removeClass(danger).removeClass(warning).removeClass(success)
                                                        .addClass(info);
       }
 
-      // Change color if timeout
+      // Change color of icons on the main page or color of panels on detail
+      // page if timeout
       if ((p.state != 1 ||
           (p.state == 1 && accepted_for_success_state != -1)) &&
           p.color == 'warning') {
@@ -186,18 +235,18 @@ function mapData(answer, location) {
       }
     }
 
-    // Highlight panels in normal state
+    // Highlight panels on main page in normal state
     for (var i = 0; i < info_panels.length; i++) {
       $('#location_' + info_panels[i]).removeClass('panel-danger')
                                       .addClass('panel-info');
     }
-    // Highlight panels in alert state
+    // Highlight panels on main page in alert state
     for (var i = 0; i < danger_panels.length; i++) {
       $('#location_' + danger_panels[i]).removeClass('panel-info')
                                         .addClass('panel-danger');
     }
 
-    // Enable disabled button
+    // Enable disabled button on detail page
     if (answer.button_id != 'no_buttons') {
       $('#button_' + answer.button_id).attr('data-status', 'nothing');
       $('#button_' + answer.button_id).attr('disabled', false);
@@ -205,7 +254,7 @@ function mapData(answer, location) {
   }
 }
 
-function MyChart(answer, port_id) {
+function MyChart(answer, port_id, text) {
 
   // Initialize variables for chart
   var margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -234,6 +283,8 @@ function MyChart(answer, port_id) {
 
   // Function for creating chart
   function createChart(raw_data) {
+
+    $("#port_" + port_id).empty();
 
     // Append chart to div
     var svg = d3.select("#port_" + port_id)
@@ -276,6 +327,17 @@ function MyChart(answer, port_id) {
        .datum(data)
        .attr("class", "line")
        .attr("d", line);
+
+    var simpleHtml = '<select id="select_' + port_id + '">' +
+                     '<option value="1">1</option>' +
+                     '<option value="5">5</option>' +
+                     '<option value="10">10</option>' +
+                     '<option value="30">30</option>' +
+                     '<option value="60">60</option>' +
+                     '<option value="100">100</option></select>';
+
+    $("#port_" + port_id).append('<b>' + text + '</b>&nbsp;');
+    $("#port_" + port_id).append(simpleHtml);
   }
 
   // Function for updating existing chart

@@ -1,6 +1,8 @@
 class EventRecordsController < ApplicationController
   before_action :set_event_record, only: [:show, :edit, :update, :destroy]
-  before_action :must_be_security_or_administrator
+  before_action :must_be_security_or_administrator, except: [:destroy, :update,
+                                                                       :edit]
+  before_action :must_be_administrator, only: [:destroy, :update, :edit]
 
   def index
     @event_records = EventRecord.order(created_at: :desc)

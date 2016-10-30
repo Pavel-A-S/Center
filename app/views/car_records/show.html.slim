@@ -55,6 +55,7 @@
       hr
       div.car_record_show_footer
         = link_to t(:car_records), car_records_path
-        = ' | '
-        = link_to t(:edit), edit_car_record_path(@car_record)
+        - if current_user.administrator?
+          = ' | '
+          = link_to t(:edit), edit_car_record_path(@car_record)
 

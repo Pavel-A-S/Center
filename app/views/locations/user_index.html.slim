@@ -16,4 +16,5 @@
 
 script
   | $(getData('#{@ports_ids.to_json.html_safe}', '#{command_handler_path}',
-  |           'user_index'));
+  |           'user_index', null));
+  | $('.tool-tip').tooltip({ 'placement': 'bottom'});

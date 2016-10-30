@@ -1,9 +1,9 @@
 - if not @car_record.blank?
   .car_record_form_wrapper
-    h3 = t(:editing_car_record)
-    br
+    div class='car_record_back'
+      = link_to t(:show), @car_record
+      = " | "
+      = link_to t(:back), car_records_path
+    h3 class='car_record_title'
+      = t(:editing_car_record)
     == render 'form'
-    br
-    = link_to t(:show), @car_record
-    = " | "
-    = link_to t(:back), car_records_path

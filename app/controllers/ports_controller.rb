@@ -2,7 +2,7 @@ class PortsController < ApplicationController
   before_action :set_port, only: [:show, :edit, :update, :destroy]
   before_action :must_be_administrator
   def index
-    @ports = Port.all
+    @ports = Port.order(location_id: :desc)
   end
 
   def show

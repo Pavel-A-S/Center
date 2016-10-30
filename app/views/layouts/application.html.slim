@@ -14,7 +14,7 @@ html lang="en"
     = csrf_meta_tags
 
   body
-    nav class="navbar no-rounded-corners navbar-inverse"
+    nav class="navbar no-rounded-corners navbar-inverse navbar-fixed-top"
       div class="container-fluid"
         div class="navbar-header"
           button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"
@@ -46,17 +46,12 @@ html lang="en"
                 li
                   = link_to t(:administrators), user_index_locations_path
               - if current_user.security? || current_user.administrator?
-                li class="dropdown"
-                  a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
-                    = t(:journals)
-                    span class="caret"
-                  ul class="dropdown-menu"
-                    li
-                      = link_to t(:event_records), event_records_path
-                    li
-                      = link_to t(:user_records), user_records_path
-                    li
-                      = link_to t(:car_records), car_records_path
+                li
+                  = link_to t(:event_records), event_records_path
+                li
+                  = link_to t(:user_records), user_records_path
+                li
+                  = link_to t(:car_records), car_records_path
               - if current_user.engineer?
                 li
                   = link_to t(:engineers), user_index_locations_path
@@ -67,29 +62,30 @@ html lang="en"
             - if user_signed_in?
               li
                 = link_to t(:exit), destroy_user_session_path, method: :delete
-
-    div id="flash"
-      - flash.each do |name, msg|
-        - if name != "timedout"
-          - if name == "alert"
-            - ending = "danger"
-          - else
-            - ending = "success"
-          = content_tag :div, class: "alert alert-#{ending} alert-dismissable",
-                              role: "alert" do
-            button.close type="button" data-dismiss="alert"
-              span aria-hidden="true"
-                | &times;
-              span.sr-only
-                | Close
-            - if msg.kind_of?(Array)
-              - msg.each do |x|
-                = x
-                br
-            - else
-              = msg
+      div id="siren_state"
 
     div class='main-wrapper'
+      div id="flash"
+        - flash.each do |name, msg|
+          - if name != "timedout"
+            - if name == "alert"
+              - ending = "danger"
+            - else
+              - ending = "success"
+            = content_tag :div, class: "alert alert-#{ending} alert-dismissable",
+                                role: "alert" do
+              button.close type="button" data-dismiss="alert"
+                span aria-hidden="true"
+                  | &times;
+                span.sr-only
+                  | Close
+              - if msg.kind_of?(Array)
+                - msg.each do |x|
+                  = x
+                  br
+              - else
+                = msg
+
       = yield
 
     footer class='main-footer'
@@ -104,3 +100,6 @@ script
   |    $('#flash').hide();
   |  }, 5000);
   | });
+  | $(document).ready(function(){ siren('#{siren_path}', '#{t(:siren_on)}', '#{audio_tag("siren.mp3", autoplay: true, loop: true)}');});
+
+

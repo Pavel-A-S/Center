@@ -30,8 +30,8 @@ body {
 .main-wrapper {
   display: inline-block;
   box-sizing: border-box;
-  padding: 0px 9px 0px 9px;
-  margin: 0px auto 0px auto;
+  padding: 0px 9px 30px 9px;
+  margin: 80px auto 0px auto;
   text-align: center;
   width: 1300px;
   min-height: 400px;
@@ -52,9 +52,15 @@ body {
 .log-plate {
   vertical-align: top;
   display: inline-block;
+  width: 550px;
+  margin: 10px 5px 0px 5px;
+}
+
+.chart-plate {
+  vertical-align: top;
+  display: inline-block;
   width: 680px;
   margin: 10px 5px 0px 5px;
-
 }
 
 .form_wrapper {
@@ -163,11 +169,11 @@ body {
 
 .user_record_form_wrapper {
   display: inline-block;
-  width: 600px;
-  margin: 15px auto 50px auto;
-  padding: 10px;
+  width: 100%;
+  margin: 0px auto 0px auto;
+  padding: 0px 20px 20px 20px;
   border: 1px solid #ccc;
-  border-radius: 15px;
+  border-radius: 10px;
   color: black;
   background-color: #fafafa;
 }
@@ -186,15 +192,49 @@ body {
   margin-bottom: 5px !important;
 }
 
+.user_well {
+  background-color: #fafafa;
+  border: 1px dotted #ccc;
+  border-radius: 10px;
+}
+
+#user_error_explanation:not(:empty) {
+  @extend .alert;
+  @extend .alert-danger;
+  text-align: left;
+  padding-top: 0px;
+  padding-bottom: 30px;
+}
+
+#user_error_explanation h2 {
+  font-size: 16px;
+}
+
+.user_record_title {
+  margin-top: 0px;
+  margin-bottom: 15px;
+}
+
+.user_record_back {
+  text-align: right;
+  margin: 17px 10px 0px 0px;
+}
+
 .car_record_form_wrapper {
   display: inline-block;
-  width: 600px;
-  margin: 15px auto 50px auto;
-  padding: 10px;
+  width: 100%;
+  margin: 0px auto 0px auto;
+  padding: 0px 20px 5px 20px;
   border: 1px solid #ccc;
-  border-radius: 15px;
+  border-radius: 10px;
   color: black;
   background-color: #fafafa;
+}
+
+.car_well {
+  background-color: #fafafa;
+  border: 1px dotted #ccc;
+  border-radius: 10px;
 }
 
 .car_record_show_size {
@@ -211,10 +251,31 @@ body {
   margin-bottom: 5px !important;
 }
 
-//.navbar_color {
-//  background-color: #d9edf7;
-//  border-bottom: 2px solid #bce8f1;
-//}
+#car_error_explanation:not(:empty) {
+  @extend .alert;
+  @extend .alert-danger;
+  text-align: left;
+  padding-top: 0px;
+  padding-bottom: 30px;
+}
+
+#car_error_explanation h2 {
+  font-size: 16px;
+}
+
+.car_record_title {
+  margin-top: 0px;
+  margin-bottom: 15px;
+}
+
+.car_record_back {
+  text-align: right;
+  margin: 17px 10px 0px 0px;
+}
+
+textarea {
+  resize: none;
+}
 
 .form_small_text {
   font-size: 80%;
@@ -275,5 +336,20 @@ body {
   font-size: 150%;
 }
 
+.siren_on {
+  font-weight: bold;
+  color: white;
+  background-color: red;
+}
+
+.log_table {
+  @extend .table-responsive;
+  table {
+    @extend .table;
+    @extend .table-striped;
+    @extend .table-bordered;
+    @extend .table-hover;
+  }
+}
 
 

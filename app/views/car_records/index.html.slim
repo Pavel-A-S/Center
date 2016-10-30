@@ -20,12 +20,14 @@ br
           = t(:car_record_initiator)
         th.text-center
           = t(:car_record_created_by)
-        th.text-center
+        - if current_user.administrator?
+          th.text-center
+          th.text-center
     tbody
       - @car_records.each do |c|
         tr
           td
-            = c.date.strftime("%H:%M:%S %d.%m.%Y")
+            = link_to c.date.strftime("%H:%M:%S %d.%m.%Y"), c
           td
             = "#{c.last_name} #{c.first_name} #{c.middle_name}"
           td
@@ -36,10 +38,9 @@ br
             = c.initiator
           td
             = c.user.try(:name)
-          td
-            = link_to t(:show), c
-            hr.car_record_hr
-            = link_to t(:edit), edit_car_record_path(c)
-            hr.car_record_hr
-            = link_to t(:delete), c, data: { confirm: t(:delete_confirmation) },
-                                      method: :delete
+          - if current_user.administrator?
+            td
+              = link_to t(:edit), edit_car_record_path(c)
+            td
+              = link_to t(:delete), c, data: { confirm: t(:delete_confirmation) },
+                                        method: :delete

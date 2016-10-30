@@ -3,7 +3,7 @@ class LocationsController < ApplicationController
   before_action :must_be_administrator, except: [:user_index, :page]
 
   def index
-    @locations = Location.all
+    @locations = Location.order(created_at: :desc)
   end
 
   def user_index
@@ -18,12 +18,8 @@ class LocationsController < ApplicationController
       @locations = nil
     end
 
-    if @locations
-      @excepted_port = Port.port_types['temperature_chart']
-      @ports_ids = Port.where(location_id: @locations)
-                       .where.not(port_type: @excepted_port)
-                       .pluck(:id)
-    end
+    @ports_ids = Port.where(location_id: @locations).pluck(:id) if @locations
+
   end
 
   def show
@@ -40,7 +36,12 @@ class LocationsController < ApplicationController
         @ports = @location.ports.where(access: @access_value)
                                 .order(:order_index)
       end
+
       @ports_ids = @ports.map { |p| p.id }
+      @accepted_ports = [Port.port_types['temperature_chart'],
+                         Port.port_types['controller_log']]
+      @ports_with_ranges = @ports.where(port_type: @accepted_ports)
+                                 .pluck(:id, :port_type)
     end
   end
 

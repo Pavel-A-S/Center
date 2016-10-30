@@ -1,5 +1,55 @@
 class CommandsController < ApplicationController
 
+  def siren
+    @request = params[:command]
+    if @request == 'GetState'
+
+      # Select locations according to rights
+      if current_user.administrator?
+        @locations = Location.all
+        @ports = Port.where(location_id: @locations) if !@locations.blank?
+      elsif current_user.engineer? || current_user.security?
+        @access_value = User.roles[current_user.role]
+        @locations = Location.where(access: @access_value)
+        if !@locations.blank?
+          @ports = Port.where(location_id: @locations, access: @access_value)
+        end
+      end
+
+      if !@ports.blank?
+
+        @alert = false
+        @ports_parameters = @ports.group_by { |p| p['connection_id'] }
+
+        @ports_parameters.each do |p|
+          @last_record = Record.where(connection_id: p[0]).try(:last)
+          if !@last_record.blank?
+            @range = Time.now - @last_record.created_at
+
+            p[1].each do |port|
+
+              if port.before_alert != 0 && @range >= port.before_alert
+                @alert = true
+              end
+
+              if port_group(port.port_type) == 'input'
+                state = 'state_' + Port.port_numbers[port.port_number].to_s
+                @alert = true if @last_record[state] == 1
+              end
+            end
+          else
+            @alert = true
+          end
+        end
+        render json: { state: @alert }
+      else
+        render json: { state: 'nothing' }
+      end
+    else
+      render json: { state: 'nothing' }
+    end
+  end
+
   def command_handler
     @request = params[:command]
     if @request == 'GetData'
@@ -42,8 +92,12 @@ class CommandsController < ApplicationController
       @response = { button_id: @button_id,
                     ports_parameters: [] }
 
+      location = params[:location]
+      ports_with_ranges = params[:ports_with_ranges]
+
       @ports_parameters.each do |p|
-        @response[:ports_parameters].push(*get_data(p[0], p[1]))
+        data = get_data(p[0], p[1], location, ports_with_ranges)
+        @response[:ports_parameters].push(*data)
       end
 
     else
@@ -239,12 +293,26 @@ class CommandsController < ApplicationController
         names = accepted_ports.map { |p| p.name }
 
         message = t(:input_alert) + names.join("; ") + '.'
+      elsif record.event_type == 'InputPassive'
+        data = JSON.parse(record.description)
+
+        ports = Port.where(port_number: data['Number'],
+                           location_id: port.location_id,
+                           access: Port.accesses[port.access])
+        accepted_ports = ports.select { |p| port_group(p.port_type) == 'input' }
+
+        names = accepted_ports.map { |p| p.name }
+
+        message = t(:input_passive) + names.join("; ") + '.'
+
+
+
       else
         record.description
       end
     end
 
-    def get_data(connection_id, ports)
+    def get_data(connection_id, ports, location, ports_with_ranges)
 
       # Select last record only one time
       if !(ports.all? { |x| port_group(x.port_type) == 'chart' ||
@@ -275,11 +343,27 @@ class CommandsController < ApplicationController
           color = get_color(data, p)
 
         elsif port_group(p.port_type) == 'chart'
-          voltage = 'voltage_' + Port.port_numbers[p.port_number].to_s
-          raw_data = Record.where(connection_id: p.connection_id)
-                           .pluck(voltage, 'created_at')
-                           .try(:last, 1000) rescue nil
-          chart_data = convert_chart_data(raw_data) if !raw_data.blank?
+          if location == 'page'
+
+            if !ports_with_ranges.blank?
+              if port = ports_with_ranges.find { |pwr| pwr[0] == p.id }
+                range = port[2].to_i.days
+              else
+                range = 1.day
+              end
+            else
+              range = 1.day
+            end
+
+            voltage = 'voltage_' + Port.port_numbers[p.port_number].to_s
+            raw_data = Record.where(connection_id: p.connection_id)
+                             .where('created_at > ?', DateTime.now - range)
+                             .pluck(voltage, 'created_at') rescue nil
+
+            chart_data = convert_chart_data(raw_data) if !raw_data.blank?
+          else
+            chart_data = 'no data'
+          end
         elsif port_group(p.port_type) == 'checker'
           time_out = p.connection.try(:time_out)
           created_at = Record.where(connection_id: p.connection_id)
@@ -299,18 +383,35 @@ class CommandsController < ApplicationController
             created_at = "No data"
           end
         elsif port_group(p.port_type) == 'log'
-          log = Log.order(created_at: :desc).last(25)
-          records = [{ created_at: CGI::escapeHTML(t(:created_at)),
-                       event_id: CGI::escapeHTML(t(:event_id)),
-                       event_type: CGI::escapeHTML(t(:event_type)),
-                       description: CGI::escapeHTML(t(:description)) }]
-          log.each do |r|
-          time = r.created_at + Time.now.utc_offset
-          description = translate_message(r, p)
-          records << { created_at: time.strftime("%H:%M:%S %d.%m.%y"),
-                       event_id: CGI::escapeHTML(r.event_id.to_s),
-                       event_type: CGI::escapeHTML(r.event_type),
-                       description: CGI::escapeHTML(description) }
+          if location == 'page'
+
+            if !ports_with_ranges.blank?
+              if port = ports_with_ranges.find { |pwr| pwr[0] == p.id }
+                range = port[2].to_i
+              else
+                range = 5
+              end
+            else
+              range = 5
+            end
+
+            log = Log.where(connection_id: p.connection_id)
+                     .order(created_at: :desc).limit(range)
+
+            records = [{ created_at: CGI::escapeHTML(t(:created_at)),
+                         event_id: CGI::escapeHTML(t(:event_id)),
+                         event_type: CGI::escapeHTML(t(:event_type)),
+                         description: CGI::escapeHTML(t(:description)) }]
+            log.each do |r|
+              time = r.created_at + Time.now.utc_offset
+              description = translate_message(r, p)
+              records << { created_at: time.strftime("%H:%M:%S %d.%m.%y"),
+                           event_id: CGI::escapeHTML(r.event_id.to_s),
+                           event_type: CGI::escapeHTML(r.event_type),
+                           description: CGI::escapeHTML(description) }
+            end
+          else
+            records = 'no data'
           end
         end
 
@@ -413,7 +514,10 @@ class CommandsController < ApplicationController
                         port_type: p.port_type,
                         port_id: p.id }
           when 'temperature_chart'
-            output << { chart_data: chart_data,
+            output << { state: 0,
+                        chart_data: chart_data,
+                        text: t(:select_days),
+                        location_id: p.location_id,
                         port_type: p.port_type,
                         port_id: p.id }
           when 'connection_checker'
@@ -423,8 +527,10 @@ class CommandsController < ApplicationController
                         port_type: p.port_type,
                         port_id: p.id }
           when 'controller_log'
-            output << { location_id: p.location_id,
+            output << { state: 0,
+                        location_id: p.location_id,
                         records: records,
+                        text: t(:records_count),
                         port_type: p.port_type,
                         port_id: p.id }
           end

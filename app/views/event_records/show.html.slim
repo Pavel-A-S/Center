@@ -18,6 +18,7 @@
       hr
       div.user_record_show_footer
         = link_to t(:event_records), event_records_path
-        = ' | '
-        = link_to t(:edit), edit_event_record_path(@event_record)
+        - if current_user.administrator?
+          = ' | '
+          = link_to t(:edit), edit_event_record_path(@event_record)
 

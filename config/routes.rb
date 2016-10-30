@@ -27,5 +27,5 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'locations#user_index'
   post 'command_handler', to: 'commands#command_handler', as: 'command_handler'
-
+  post 'siren', to: 'commands#siren', as: 'siren'
 end

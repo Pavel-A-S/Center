@@ -14,21 +14,20 @@ br
           = t(:event_record_description)
         th.text-center
           = t(:event_record_created_by)
-        th
-        th
-        th
+        - if current_user.administrator?
+          th.text-center
+          th.text-center
     tbody
       - @event_records.each do |e|
         tr
           td
-            = e.date.strftime("%H:%M:%S %d.%m.%Y")
+            = link_to e.date.strftime("%H:%M:%S %d.%m.%Y"), e
           td
             = e.description
           td
             = e.user.try(:name)
-          td
-            = link_to t(:show), e
-          td
-            = link_to t(:edit), edit_event_record_path(e)
-          td
-            = link_to t(:delete), e, data: { confirm: t(:delete_confirmation) }, method: :delete
+          - if current_user.administrator?
+            td
+              = link_to t(:edit), edit_event_record_path(e)
+            td
+              = link_to t(:delete), e, data: { confirm: t(:delete_confirmation) }, method: :delete

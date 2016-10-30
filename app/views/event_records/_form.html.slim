@@ -12,6 +12,6 @@
       = f.datetime_select :date, default: DateTime.now, class: 'form-control'
     .form-group
       = f.label :description, t(:event_record_description)
-      = f.text_area :description, class: 'form-control'
+      = f.text_area :description, class: 'form-control', rows: '9'
 
     = f.submit t(:confirm), class: 'btn btn-primary'

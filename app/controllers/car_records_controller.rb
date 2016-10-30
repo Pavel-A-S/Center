@@ -1,6 +1,8 @@
 class CarRecordsController < ApplicationController
   before_action :set_car_record, only: [:show, :edit, :update, :destroy]
-  before_action :must_be_security_or_administrator
+  before_action :must_be_security_or_administrator, except: [:destroy, :update,
+                                                                       :edit]
+  before_action :must_be_administrator, only: [:destroy, :update, :edit]
 
   def index
     @car_records = CarRecord.order(created_at: :desc)

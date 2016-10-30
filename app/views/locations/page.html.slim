@@ -5,8 +5,8 @@ div class="wrapper_for_sensors" id="location_#{@location.id}"
 script
   | $('#location_#{@location.id}').on('click', function(e) {
   |   trigger('#{@ports_ids.to_json.html_safe}', '#{command_handler_path}', e,
-  |           'page');
+  |           'page', '#{@ports_with_ranges.to_json.html_safe}');
   | });
   |
   | $(getData('#{@ports_ids.to_json.html_safe}', '#{command_handler_path}',
-  |           'page'));
+  |           'page', '#{@ports_with_ranges.to_json.html_safe}'));

@@ -15,18 +15,17 @@ br
         th.text-center
           = t(:location_access)
         th
+        th
     tbody
       - @locations.each do |location|
         tr
           td
-            = link_to location.name, page_location_path(location)
+            = link_to location.name, location
           td
             = location.description
           td
             = t("#{location.access}") if location.access
           td
-            = link_to t(:show), location
-            hr.location_hr
             = link_to t(:edit), edit_location_path(location)
-            hr.location_hr
+          td
             = link_to t(:delete), location, data: { confirm: t(:delete_confirmation) }, method: :delete

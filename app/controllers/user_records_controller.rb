@@ -1,6 +1,8 @@
 class UserRecordsController < ApplicationController
   before_action :set_user_record, only: [:show, :edit, :update, :destroy]
-  before_action :must_be_security_or_administrator
+  before_action :must_be_security_or_administrator, except: [:destroy, :update,
+                                                                       :edit]
+  before_action :must_be_administrator, only: [:destroy, :update, :edit]
 
   def index
     @user_records = UserRecord.order(created_at: :desc)

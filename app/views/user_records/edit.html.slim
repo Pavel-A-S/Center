@@ -1,9 +1,9 @@
 - if not @user_record.blank?
   .user_record_form_wrapper
-    h3 = t(:editing_user_record)
-    br
+    div class='user_record_back'
+      = link_to t(:show), @user_record
+      = " | "
+      = link_to t(:back), user_records_path
+    h3 class='user_record_title'
+      = t(:editing_user_record)
     == render 'form'
-    br
-    = link_to t(:show), @user_record
-    = " | "
-    = link_to t(:back), user_records_path
