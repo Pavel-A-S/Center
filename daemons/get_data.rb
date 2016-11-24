@@ -27,7 +27,7 @@ class Daemon
     @connections_log_table_name = data[:connections_log_table_name]
 
     # Catch exit signal
-    Signal.trap("QUIT") do
+    Signal.trap("TERM") do
       to_log("Exit: PID #{Process.pid}")
       exit
     end
@@ -381,7 +381,7 @@ loop do
     @for_destroy.each do |p|
       begin
         # Kill process
-        Process.kill("QUIT", p[:pid])
+        Process.kill("TERM", p[:pid])
         Process.wait p[:pid]
 
         # Forget this PID

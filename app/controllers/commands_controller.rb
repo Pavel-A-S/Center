@@ -304,9 +304,12 @@ class CommandsController < ApplicationController
         names = accepted_ports.map { |p| p.name }
 
         message = t(:input_passive) + names.join("; ") + '.'
-
-
-
+      elsif record.event_type == 'CaseOpen'
+        message = t(:open_case)
+      elsif record.event_type == 'DeviceOn'
+        message = t(:device_on)
+      elsif record.event_type == 'Test'
+        message = t(:test_message_from_device)
       else
         record.description
       end
@@ -516,6 +519,7 @@ class CommandsController < ApplicationController
           when 'temperature_chart'
             output << { state: 0,
                         chart_data: chart_data,
+                        title: p.name,
                         text: t(:select_days),
                         location_id: p.location_id,
                         port_type: p.port_type,
@@ -530,6 +534,7 @@ class CommandsController < ApplicationController
             output << { state: 0,
                         location_id: p.location_id,
                         records: records,
+                        title: p.name,
                         text: t(:records_count),
                         port_type: p.port_type,
                         port_id: p.id }

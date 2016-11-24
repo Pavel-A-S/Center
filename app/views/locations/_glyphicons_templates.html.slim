@@ -16,7 +16,7 @@
 
   - if port.chart?
 
-    div class="port_picture_wrapper alert alert-danger tool-tip" id="#{port.location_id}_#{port.id}" data-toggle='tooltip' title="#{t(:chart)}"
+    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip'
       span.glyphicon.glyphicon-blackboard
 
   - if port.temperature?
@@ -51,5 +51,5 @@
 
   - if port.controller_log?
 
-    div class="port_picture_wrapper alert alert-danger tool-tip" id="#{port.location_id}_#{port.id}" data-toggle='tooltip' title="#{t(:journal)}"
+    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip'
       span.glyphicon.glyphicon-list-alt

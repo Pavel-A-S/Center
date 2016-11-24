@@ -234,6 +234,9 @@ ru:
   partition_arm_off: "Снятие с охраны. Периметр "
   input_alert: "Тревога: "
   input_passive: "Отмена тревоги: "
+  open_case: "Крышка устройства открыта."
+  device_on: "Устройство включено."
+  test_message_from_device: "Получено тестовое сообщение от устройства."
   #
   last_connection: "Данные получены: "
   select_days: "Выберите период (дни):"
@@ -475,6 +478,9 @@ en:
   partition_arm_off: "Disarming, partition "
   input_alert: "Alert: "
   input_passive: "Alert was canceled: "
+  open_case: "Device case is opened."
+  device_on: "Device on."
+  test_message_from_device: "Test message from device has been received."
   #
   last_connection: "Last connection: "
   select_days: "Select amount (days):"

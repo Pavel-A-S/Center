@@ -349,6 +349,15 @@ textarea {
     @extend .table-striped;
     @extend .table-bordered;
     @extend .table-hover;
+    th {
+      @extend .text-center;
+    }
+    td {
+      @extend .text-left;
+    }
+    td.no-line-break {
+      white-space: nowrap;
+    }
   }
 }
 

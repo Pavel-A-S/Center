@@ -142,21 +142,17 @@ function mapData(answer, location) {
                            '</th><th>' +
                            p.records[0].created_at +
                            '</th><th>' +
-                           p.records[0].event_type +
-                           '</th><th>' +
                            p.records[0].description +
                            '</th></tr></thead><tbody>';
           for (var z = 1; z < p.records.length; z++) {
             simpleHtml = simpleHtml +
-            '<tr><th>' +
+            '<tr><td>' +
             p.records[z].event_id +
-            '</th><th>' +
+            "</td><td class='no-line-break'>" +
             p.records[z].created_at +
-            '</th><th>' +
-            p.records[z].event_type +
-            '</th><th>' +
+            '</td><td>' +
             p.records[z].description +
-            '</th></tr>';
+            '</td></tr>';
           }
 
           simpleHtml = simpleHtml + '</tbody></table></div>';
@@ -185,6 +181,8 @@ function mapData(answer, location) {
 
         if (type == 'temperature_sensor') {
           var title = p.temperature + " &deg;C";
+        } else if (type == 'temperature_chart') {
+          var title = p.title;
         } else if (common_port != -1) {
           var title = p.text;
         } else if (type == 'switch' || type == 'arming_switch') {
@@ -192,9 +190,12 @@ function mapData(answer, location) {
         } else if (type == 'connection_checker') {
           var title = target.attr('data-last-connection') + '<br>' +
                                                             p.created_at;
+        } else if (type == 'controller_log') {
+          var title = p.title;
         }
 
-        target.tooltip({ 'placement': 'bottom', 'title': title });
+        target.attr('data-original-title', title)
+              .tooltip({ 'placement': 'bottom' });
 
         // Select panels for highlighting
         if ((p.color == 'danger' || p.state == 1) &&
