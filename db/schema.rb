@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161026074021) do
+ActiveRecord::Schema.define(version: 20161127162208) do
 
   create_table "car_records", force: :cascade do |t|
     t.datetime "date"
@@ -87,12 +87,13 @@ ActiveRecord::Schema.define(version: 20161026074021) do
     t.integer  "connection_id",  limit: 4
     t.text     "description",    limit: 65535
     t.integer  "order_index",    limit: 4
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
     t.integer  "icon",           limit: 4
     t.integer  "access",         limit: 4
     t.integer  "before_warning", limit: 4
     t.integer  "before_alert",   limit: 4
+    t.integer  "state",          limit: 4,     default: 1
   end
 
   create_table "records", force: :cascade do |t|

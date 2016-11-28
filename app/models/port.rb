@@ -26,6 +26,8 @@ class Port < ActiveRecord::Base
 
   enum access: [:security, :engineer, :administrator]
 
+  enum state: [:disabled, :enabled]
+
   validates :name, presence: true, length: { maximum: 250 }
   validates :order_index, numericality: { greater_than: -100000,
                                           less_than: 100000 }

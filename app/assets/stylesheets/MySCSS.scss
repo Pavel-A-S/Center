@@ -361,4 +361,17 @@ textarea {
   }
 }
 
+.port-disabled {
+  background-color: #f5f5f5;
+  border-color: #ddd;
+  color: #333;
+}
 
+#order-table {
+  opacity: 0;
+  width: 99% !important;
+  th {
+    vertical-align: middle;
+    padding: 5px 25px 5px 8px;
+  }  
+}

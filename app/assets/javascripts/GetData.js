@@ -117,6 +117,7 @@ function mapData(answer, location) {
 
       // Data for detailed page
       if (location == 'page') {
+        var disabled = 'panel-default';
         var info = 'panel-info';
         var danger = 'panel-danger';
         var warning = 'panel-warning';
@@ -124,7 +125,11 @@ function mapData(answer, location) {
         var target = $('#port_' + id).parent();
 
         if (type == 'temperature_sensor') {
-          $('#port_' + id).text(p.temperature).append(' &deg;C');
+          if (p.state == 7) {
+            $('#port_' + id).text(p.temperature);
+          } else {
+            $('#port_' + id).text(p.temperature).append(' &deg;C');
+          }
         } else if (common_port != -1) {
           $('#port_' + id).text(p.text);
         } else if (type == 'switch' || type == 'arming_switch') {
@@ -174,13 +179,18 @@ function mapData(answer, location) {
       // Data for main page
       } else if (location == 'user_index') {
         var target = $('#' + p.location_id + '_' + id);
+        var disabled = 'port-disabled';
         var info = 'alert-info';
         var danger = 'alert-danger';
         var warning = 'alert-warning';
         var success = 'alert-success';
 
         if (type == 'temperature_sensor') {
-          var title = p.temperature + " &deg;C";
+          if (p.state == 7) {
+            var title = p.temperature;
+          } else {
+            var title = p.temperature + " &deg;C";
+          }
         } else if (type == 'temperature_chart') {
           var title = p.title;
         } else if (common_port != -1) {
@@ -206,7 +216,9 @@ function mapData(answer, location) {
             danger_panels[i] = p.location_id;
           }
 
-        } else if (p.state == 0 && accepted_for_danger_state != -1) {
+        } else if ((p.state == 0 || p.state == 7) &&
+                  accepted_for_danger_state != -1) {
+
           if (info_panels.indexOf(p.location_id) == -1) {
             info_panels[i] = p.location_id;
           }
@@ -216,13 +228,20 @@ function mapData(answer, location) {
       // Change color of icons on the main page or color of panels on detail
       // page if state
       if (p.state == 1 && accepted_for_danger_state != -1) {
-        target.removeClass(info).removeClass(warning).addClass(danger);
+        target.removeClass(info).removeClass(warning).removeClass(disabled)
+                                                     .addClass(danger);
       } else if (p.state == 1 && accepted_for_success_state != -1) {
         target.removeClass(info).removeClass(warning).removeClass(danger)
+                                                     .removeClass(disabled)
                                                      .addClass(success);
       } else if (p.state == 0) {
         target.removeClass(danger).removeClass(warning).removeClass(success)
+                                                       .removeClass(disabled)
                                                        .addClass(info);
+      } else if (p.state == 7) {
+        target.removeClass(danger).removeClass(warning).removeClass(success)
+                                                       .removeClass(info)
+                                                       .addClass(disabled);
       }
 
       // Change color of icons on the main page or color of panels on detail
@@ -230,9 +249,14 @@ function mapData(answer, location) {
       if ((p.state != 1 ||
           (p.state == 1 && accepted_for_success_state != -1)) &&
           p.color == 'warning') {
-        target.removeClass(info).removeClass(danger).addClass(warning);
+        target.removeClass(info).removeClass(danger).removeClass(disabled)
+                                                    .addClass(warning);
       } else if (p.color == 'danger') {
-        target.removeClass(info).removeClass(warning).addClass(danger);
+        target.removeClass(info).removeClass(warning).removeClass(disabled)
+                                                     .addClass(danger);
+      } else if (p.color == 'grey') {
+        target.removeClass(info).removeClass(warning).removeClass(danger)
+                                                     .addClass(disabled);
       }
     }
 

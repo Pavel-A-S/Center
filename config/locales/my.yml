@@ -70,7 +70,7 @@ ru:
   connection_was_not_created: "Соединение не было создано"
   connection_was_not_updated: "Соединение не было обновлено"
   connection_was_not_deleted: "Соединение не было удалено"
-  # Ports part 1
+  # Ports - views
   port: "Порт"
   ports: "Порты"
   port_name: "Название"
@@ -80,14 +80,15 @@ ru:
   port_location: "Отображать в"
   port_connection: "Соединение"
   port_description: "Описание"
-  port_access: "Доступ"
   port_icon: "Изображение"
   port_before_warning: "Актуальность данных снижается через (секунд)"
   port_before_alert: "Данные становятся не актуальными через (секунд)"
+  port_state: "Состояние"
+  port_access: "Доступ"
   create_port: " Создать порт"
   new_port: "Новый порт"
   editing_port: "Редактирование порта"
-  # Ports part 2
+  # Ports - from controller to JavaScript
   opened: "Открыто"
   closed: "Закрыто"
   started: "Включено"
@@ -104,6 +105,7 @@ ru:
   disarmed: "Охрана снята"
   arm_on: "Поставить на охрану"
   arm_off: " Снять с охраны"
+  port_disabled: "Порт отключён"
   # Ports - controller
   port_was_created: "Порт был создан"
   port_was_updated: "Порт был обновлён"
@@ -111,6 +113,9 @@ ru:
   port_was_not_created: "Порт не был создан"
   port_was_not_updated: "Порт не был обновлён"
   port_was_not_deleted: "Порт не был удалён"
+  # Ports - enums
+  disabled: "Отключён"
+  enabled: "Включён"
   # Locations
   location: "Объект"
   locations: "Объекты"
@@ -314,7 +319,7 @@ en:
   connection_was_not_created: "Connection wasn't created."
   connection_was_not_updated: "Connection wasn't updated."
   connection_was_not_deleted: "Connection wasn't deleted."
-  # Ports part 1
+  # Ports - views
   port: "Port"
   ports: "Ports"
   port_name: "Name"
@@ -327,11 +332,12 @@ en:
   port_icon: "Icon"
   port_before_warning: "Time before warning (seconds)"
   port_before_alert: "Time before alert (seconds)"
+  port_state: "State"
   port_access: "Access"
   create_port: "Create port"
   new_port: "New port"
   editing_port: "Editing port"
-  # Ports part 2
+  # Ports - from controller to JavaScript
   opened: "Opened"
   closed: "Closed"
   started: "on"
@@ -348,6 +354,7 @@ en:
   disarmed: "Disarmed"
   arm_on: "Arm"
   arm_off: "Disarm"
+  port_disabled: "Port disabled"
   # Ports - controller
   port_was_created: "Port was successfully created."
   port_was_updated: "Port was successfully updated."
@@ -355,6 +362,9 @@ en:
   port_was_not_created: "Port wasn't created."
   port_was_not_updated: "Port wasn't updated."
   port_was_not_deleted: "Port wasn't deleted."
+  # Ports - enums
+  disabled: "Disabled"
+  enabled: "Enabled"
   # Locations
   location: "Location"
   locations: "Locations"

@@ -45,7 +45,10 @@
       = f.label :before_alert, t(:port_before_alert)
       = f.number_field :before_alert, value: @port.before_alert || 0,
                                               class: 'form-control'
-
+    .form-group
+      = f.label :state, t(:port_state)
+      = f.select :state, Port.states.keys.map{ |s| [t("#{s}"), s] }, {},
+                         { class: 'form-control' }
     .form-group
       = f.label :description, t(:port_description)
       = f.text_area :description, class: 'form-control'

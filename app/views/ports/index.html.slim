@@ -4,11 +4,12 @@
 br
 br
 
-
 .table-responsive
-  table.table.table-striped.table-bordered.table-hover
+  table.table.table-striped.table-bordered.table-hover#order-table
     thead
       tr
+        th.text-center
+          = t(:port_location)
         th.text-center
           = t(:port_name)
         th.text-center
@@ -18,8 +19,6 @@ br
         th.text-center
           = t(:port_type)
         th.text-center
-          = t(:port_location)
-        th.text-center
           = t(:port_connection)
         th.text-center
           = t(:port_icon)
@@ -28,12 +27,14 @@ br
         th.text-center
           = t(:port_before_alert)
         th.text-center
-          = t(:port_description)
+          = t(:port_state)
         th.text-center
           = t(:port_access)
     tbody
       - @ports.each do |port|
         tr
+          td data-order="#{port.try(:location).try(:name)}"
+            = port.try(:location).try(:name)
           td
             = link_to port.name, port
           td
@@ -43,8 +44,6 @@ br
           td
             = t("#{port.port_type}") if !port.port_type.blank?
           td
-            = port.try(:location).try(:name)
-          td
             = port.try(:connection).try(:name)
           td
             = t("#{port.icon}") if !port.icon.blank?
@@ -53,8 +52,14 @@ br
           td
             = port.before_alert
           td
-            = port.description
+            = t("#{port.state}") if !port.state.blank?
           td
             = t("#{port.access}") if !port.access.blank?
 
-
+script
+  |$('#order-table').dataTable({
+  |        "aLengthMenu": [[25, 50, -1], [25, 50, "All"]],
+  |        "iDisplayLength": 25,
+  |        "order": [[0, 'asc']],
+  |        "language": { "url": "#{root_url + '/assets/Russian.json'}" }
+  |    }).animate({opacity: 1})

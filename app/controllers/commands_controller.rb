@@ -27,14 +27,15 @@ class CommandsController < ApplicationController
             @range = Time.now - @last_record.created_at
 
             p[1].each do |port|
+              if port.enabled?
+                if port.before_alert != 0 && @range >= port.before_alert
+                  @alert = true
+                end
 
-              if port.before_alert != 0 && @range >= port.before_alert
-                @alert = true
-              end
-
-              if port_group(port.port_type) == 'input'
-                state = 'state_' + Port.port_numbers[port.port_number].to_s
-                @alert = true if @last_record[state] == 1
+                if port_group(port.port_type) == 'input'
+                  state = 'state_' + Port.port_numbers[port.port_number].to_s
+                  @alert = true if @last_record[state] == 1
+                end
               end
             end
           else
@@ -58,7 +59,8 @@ class CommandsController < ApplicationController
       if @button_id && @port = Port.find_by(id: @button_id)
 
         # Check user rights
-        if @port.access == current_user.role || current_user.administrator?
+        if @port.enabled? && (@port.access == current_user.role ||
+                              current_user.administrator?)
 
           # Determine command
           @command = get_command(@port)
@@ -256,19 +258,22 @@ class CommandsController < ApplicationController
     end
 
     def get_color(data, p)
+      if p.enabled?
+        color = "info"
 
-      color = "info"
+        if data
+          range = Time.now - data.created_at
 
-      if data
-        range = Time.now - data.created_at
+          if p.before_warning != 0 && range >= p.before_warning
+            color = "warning"
+          end
 
-        if p.before_warning != 0 && range >= p.before_warning
-          color = "warning"
+          if p.before_alert != 0 && range >= p.before_alert
+            color = "danger"
+          end
         end
-
-        if p.before_alert != 0 && range >= p.before_alert
-          color = "danger"
-        end
+      else
+        color = "grey"
       end
 
       return color
@@ -428,8 +433,16 @@ class CommandsController < ApplicationController
 
           case p.port_type
           when 'temperature_sensor'
-            temperature = (((data[voltage].to_f*10/4095)/5 - 0.5)/0.01).round(2)
-            output << { state: data[state],
+            if p.enabled?
+              port_state = data[state]
+              temperature = (((data[voltage].to_f*10/4095)/5 - 0.5)/0.01)
+                            .round(2)
+            else
+              port_state = 7
+              temperature = t(:port_disabled)
+            end
+
+            output << { state: port_state,
                         color: color,
                         temperature: temperature,
                         location_id: p.location_id,
@@ -437,62 +450,93 @@ class CommandsController < ApplicationController
                         port_id: p.id }
 
           when 'reed_switch'
-            if data[state] == 0
-              text = t(:closed)
+            if p.enabled?
+              port_state = data[state]
+              if port_state == 0
+                text = t(:closed)
+              else
+                text = t(:opened)
+              end
             else
-              text = t(:opened)
+              port_state = 7
+              text = t(:port_disabled)
             end
-            output << { state: data[state],
+            output << { state: port_state,
                         color: color,
                         location_id: p.location_id,
                         text: text,
                         port_type: p.port_type,
                         port_id: p.id }
           when 'motion_sensor'
-            if data[state] == 0
-              text = t(:no_motion)
+            if p.enabled?
+              port_state = data[state]
+              if port_state == 0
+                text = t(:no_motion)
+              else
+                text = t(:motion_is_detected)
+              end
             else
-              text = t(:motion_is_detected)
+              port_state = 7
+              text = t(:port_disabled)
             end
-            output << { state: data[state],
+            output << { state: port_state,
                         color: color,
                         location_id: p.location_id,
                         text: text,
                         port_type: p.port_type,
                         port_id: p.id }
           when 'smoke_sensor'
-            if data[state] == 0
-              text = t(:no_smoke)
+            if p.enabled?
+              port_state = data[state]
+              if port_state == 0
+                text = t(:no_smoke)
+              else
+                text = t(:smoke_is_detected)
+              end
             else
-              text = t(:smoke_is_detected)
+              port_state = 7
+              text = t(:port_disabled)
             end
-            output << { state: data[state],
+            output << { state: port_state,
                         color: color,
                         location_id: p.location_id,
                         text: text,
                         port_type: p.port_type,
                         port_id: p.id }
           when 'leak_sensor'
-            if data[state] == 0
-              text = t(:no_leak)
+            if p.enabled?
+              port_state = data[state]
+              if port_state == 0
+                text = t(:no_leak)
+              else
+                text = t(:leak_is_detected)
+              end
             else
-              text = t(:leak_is_detected)
+              port_state = 7
+              text = t(:port_disabled)
             end
-            output << { state: data[state],
+            output << { state: port_state,
                         color: color,
                         location_id: p.location_id,
                         text: text,
                         port_type: p.port_type,
                         port_id: p.id }
           when 'switch'
-            if data[state] == 0
-              text = t(:stopped)
-              button_text = t(:switch_on)
+            if p.enabled?
+              port_state = data[state]
+              if port_state == 0
+                text = t(:stopped)
+                button_text = t(:switch_on)
+              else
+                text = t(:started)
+                button_text = t(:switch_off)
+              end
             else
-              text = t(:started)
-              button_text = t(:switch_off)
+              port_state = 7
+              text = t(:port_disabled)
+              button_text = t(:port_disabled)
             end
-            output << { state: data[state],
+            output << { state: port_state,
                         color: color,
                         location_id: p.location_id,
                         text: text,
@@ -500,14 +544,20 @@ class CommandsController < ApplicationController
                         port_type: p.port_type,
                         port_id: p.id }
           when 'arming_switch'
-            if data[state] == "Arm"
-              alias_state = 1
-              text = t(:armed)
-              button_text = t(:arm_off)
-            elsif data[state] == "Disarm"
-              alias_state = 0
-              text = t(:disarmed)
-              button_text = t(:arm_on)
+            if p.enabled?
+              if data[state] == "Arm"
+                alias_state = 1
+                text = t(:armed)
+                button_text = t(:arm_off)
+              elsif data[state] == "Disarm"
+                alias_state = 0
+                text = t(:disarmed)
+                button_text = t(:arm_on)
+              end
+            else
+              alias_state = 7
+              text = t(:port_disabled)
+              button_text = t(:port_disabled)
             end
             output << { state: alias_state,
                         color: color,

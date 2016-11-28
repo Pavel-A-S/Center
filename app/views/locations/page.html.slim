@@ -1,3 +1,6 @@
+h3
+  = @location.name
+br
 div class="wrapper_for_sensors" id="location_#{@location.id}"
 
   = render partial: 'port_templates', locals: { ports: @ports }

@@ -60,6 +60,12 @@
           = @port.before_alert
         br
         dt
+          = t(:port_state)
+        br
+        dd
+          = t("#{@port.state}") if @port.state
+        br
+        dt
           = t(:port_description)
         br
         dd

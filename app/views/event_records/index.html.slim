@@ -5,7 +5,7 @@ br
 br
 
 .table-responsive
-  table.table.table-striped.table-bordered.table-hover
+  table.table.table-striped.table-bordered.table-hover#order-table
     thead
       tr
         th.text-center
@@ -31,3 +31,10 @@ br
               = link_to t(:edit), edit_event_record_path(e)
             td
               = link_to t(:delete), e, data: { confirm: t(:delete_confirmation) }, method: :delete
+script
+  |$('#order-table').dataTable({
+  |        "aLengthMenu": [[25, 50, -1], [25, 50, "All"]],
+  |        "iDisplayLength": 25,
+  |        "order": [[0, 'desc']],
+  |        "language": { "url": "#{root_url + '/assets/Russian.json'}" }
+  |    }).animate({opacity: 1})

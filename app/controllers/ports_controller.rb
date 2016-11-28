@@ -60,6 +60,7 @@ class PortsController < ApplicationController
                                                         :description,
                                                         :access,
                                                         :before_warning,
-                                                        :before_alert)
+                                                        :before_alert,
+                                                        :state)
     end
 end
