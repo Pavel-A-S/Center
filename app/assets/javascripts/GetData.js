@@ -293,6 +293,7 @@ function MyChart(answer, port_id, text) {
       .range([height, 0]);
 
   var y_zoom = 2;
+  var x_ticks = 5;
 
   // Set functions for ejecting input data
   var line = d3.line()
@@ -335,12 +336,13 @@ function MyChart(answer, port_id, text) {
 
     // Set data
     svg.append("g")
-       .attr("class", "axis axis--x")
+       .attr("class", "grid")
        .attr("transform", "translate(0," + height + ")")
-       .call(d3.axisBottom(x));
+       .call(d3.axisBottom(x).ticks(x_ticks).tickSize(-height).tickFormat(""));
     svg.append("g")
-       .attr("class", "axis axis--y")
-       .call(d3.axisLeft(y))
+       .attr("class", "grid")
+       .call(d3.axisLeft(y).tickSize(-width).tickFormat(""))
+
     svg.append("text")
        .attr("class", "axis-title")
        .attr("transform", "rotate(-90)")
@@ -352,6 +354,15 @@ function MyChart(answer, port_id, text) {
        .datum(data)
        .attr("class", "line")
        .attr("d", line);
+
+    svg.append("g")
+       .attr("class", "axis axis--x")
+       .attr("transform", "translate(0," + height + ")")
+       .call(d3.axisBottom(x).ticks(x_ticks));
+    svg.append("g")
+       .attr("class", "axis axis--y")
+       .call(d3.axisLeft(y))
+
 
     var simpleHtml = '<select id="select_' + port_id + '">' +
                      '<option value="1">1</option>' +
@@ -384,7 +395,8 @@ function MyChart(answer, port_id, text) {
 
     // Update data
     svg.select('g.axis--y').call(d3.axisLeft(y));
-    svg.select('g.axis--x').call(d3.axisBottom(x));
+    svg.select('g.axis--x').call(d3.axisBottom(x).ticks(x_ticks));
+
     svg.select('.line').attr('d', line(data));
   }
 }
