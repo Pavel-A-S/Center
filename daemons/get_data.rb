@@ -3,6 +3,7 @@ gem 'mysql2', '~> 0.3.18'
 require 'net/http'
 require 'mysql2'
 require 'json'
+# require 'pry'
 
 module ToLog
   def to_log(data)
@@ -341,7 +342,6 @@ to_log("Main program PID: #{Process.pid}")
 client = connect_to_db(@host, @username, @password, @database)
 
 # Initialise variables
-@first_start = true
 @pids = []
 
 loop do
@@ -353,10 +353,8 @@ loop do
   # Select all connections
   records = client.query("SELECT * FROM #{@connection_table}") rescue 'nope'
 
-  # Check if the program is started for the first time
-  # Check if no SQL errors
-  # Check if records exist in database
-  if !(@first_start || records == 'nope' || records.nil?)
+  # Check if no SQL errors and records exist in database
+  if !(records == 'nope' || records.nil?)
 
     # Select connections for update
     records.each(as: :hash) do |r|
@@ -371,6 +369,8 @@ loop do
         rescue
           to_log("SQL: 'update_me' field wasn't updated")
         end
+      elsif !@pids.find { |x| x[:connection_id] == r['id'] }
+        @new_processes << r
       else
         # Remove all connections from list "for destroy"
         # if they exist in the database and don't have mark 'update me'
@@ -384,8 +384,22 @@ loop do
         Process.kill("TERM", p[:pid])
         Process.wait p[:pid]
 
+        # States of variables
+        to_log("@for_destroy:\n#{@for_destroy}") rescue to_log("@for_destroy")
+        to_log("@pids before deletion:\n#{@pids}") rescue to_log("@pids before")
+
         # Forget this PID
         @pids.delete_if { |x| x[:pid] == p[:pid] }
+
+        # States of variables
+        to_log("@pids after deletion:\n#{@pids}") rescue to_log("@pids after")
+
+        begin
+          to_log("SQL records:\n#{records.map { |x| x["id"] }}")
+          to_log("Count of SQL records:\n#{records.count}")
+        rescue
+          to_log("SQL records error")
+        end
 
         to_log("Daemon #{p[:controller_identifier]} " +
                "PID: #{p[:pid]} was killed")
@@ -393,16 +407,10 @@ loop do
         to_log("Error: process with PID #{p[:pid]} wasn't killed")
       end
     end
-  elsif @first_start && !(records == 'nope' || records.nil?)
-
-    # Undo first time
-    @first_start = false
-
-    # Select all connections
-    @new_processes = records
-
   elsif records == nil
     to_log("SQL: return nil")
+  elsif records == 'nope'
+    to_log("SQL: return error")
   end
 
   # Launch new processes
