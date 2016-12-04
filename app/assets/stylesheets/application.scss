@@ -16,6 +16,8 @@
  *= require dataTables.bootstrap
  */
 
+  $screen-sm-min: 960px;
+
   @import "bootstrap-sprockets";
   @import "bootstrap";
   @import "MySCSS";

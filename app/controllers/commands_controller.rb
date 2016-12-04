@@ -353,8 +353,11 @@ class CommandsController < ApplicationController
         elsif port_group(p.port_type) == 'chart'
           if location == 'page'
 
-            if !ports_with_ranges.blank?
-              if port = ports_with_ranges.find { |pwr| pwr[0] == p.id }
+            if !ports_with_ranges.blank? &&
+               port = ports_with_ranges.find { |pwr| pwr[0] == p.id }
+
+              # Restrict maximum and minimum values for range of chart
+              if port[2].to_i > 0 && port[2].to_i <= 14
                 range = port[2].to_i.days
               else
                 range = 1.day
