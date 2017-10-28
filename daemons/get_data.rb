@@ -243,6 +243,7 @@ class Daemon
         description = @client.escape(e.to_json.to_s)
         command = "SELECT * FROM #{@log_table_name} "\
                   "WHERE event_type='#{event_type}' "\
+                  "AND controller_identifier='#{@controller_identifier}' "\
                   "AND description='#{description}' "\
                   "ORDER BY created_at DESC LIMIT 1"
         record = @client.query(command)
