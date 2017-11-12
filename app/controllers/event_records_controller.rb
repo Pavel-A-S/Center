@@ -1,22 +1,21 @@
+# Event records controller
 class EventRecordsController < ApplicationController
-  before_action :set_event_record, only: [:show, :edit, :update, :destroy]
-  before_action :must_be_security_or_administrator, except: [:destroy, :update,
-                                                                       :edit]
-  before_action :must_be_administrator, only: [:destroy, :update, :edit]
+  before_action :set_event_record, only: %i[show edit update destroy]
+  before_action :must_be_security_or_administrator,
+                except: %i[destroy update edit]
+  before_action :must_be_administrator, only: %i[destroy update edit]
 
   def index
     @event_records = EventRecord.order(created_at: :desc)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @event_record = EventRecord.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     data = event_record_params
@@ -54,11 +53,12 @@ class EventRecordsController < ApplicationController
   end
 
   private
-    def set_event_record
-      @event_record = EventRecord.find(params[:id])
-    end
 
-    def event_record_params
-      params.require(:event_record).permit(:description, :date)
-    end
+  def set_event_record
+    @event_record = EventRecord.find(params[:id])
+  end
+
+  def event_record_params
+    params.require(:event_record).permit(:description, :date)
+  end
 end

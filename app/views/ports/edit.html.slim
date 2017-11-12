@@ -7,3 +7,6 @@
     = link_to t(:show), @port
     = " | "
     = link_to t(:back), ports_path
+  script
+    | fieldsSwitcher();
+    | $('#port_type').on('change', function() { fieldsSwitcher(); });

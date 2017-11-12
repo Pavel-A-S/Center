@@ -42,19 +42,19 @@ br
           td
             = port.port_number
           td
-            = t("#{port.port_type}") if !port.port_type.blank?
+            = t("#{port.port_type}.name") unless port.port_type.blank?
           td
             = port.try(:connection).try(:name)
           td
-            = t("#{port.icon}") if !port.icon.blank?
+            = t("#{port.icon}") unless port.icon.blank?
           td
             = port.before_warning
           td
             = port.before_alert
           td
-            = t("#{port.state}") if !port.state.blank?
+            = t("#{port.state}") unless port.state.blank?
           td
-            = t("#{port.access}") if !port.access.blank?
+            = t("#{port.access}") unless port.access.blank?
 
 script
   |$('#order-table').dataTable({

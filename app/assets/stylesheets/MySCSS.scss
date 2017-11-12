@@ -58,6 +58,13 @@ body {
   margin: 10px 5px 0px 5px;
 }
 
+.controller-raw-data-plate {
+  vertical-align: top;
+  display: inline-block;
+  width: 300px;
+  margin: 10px 5px 0px 5px;
+}
+
 .chart-plate {
   vertical-align: top;
   display: inline-block;
@@ -379,6 +386,26 @@ textarea {
   }
 }
 
+.controller-raw-data-table {
+  @extend .table-responsive;
+  table {
+    @extend .table;
+    @extend .table-striped;
+    @extend .table-bordered;
+    @extend .table-hover;
+    @extend .table-condensed;
+    th {
+      @extend .text-center;
+    }
+    td {
+      @extend .text-center;
+    }
+    td.no-line-break {
+      white-space: nowrap;
+    }
+  }
+}
+
 .port-disabled {
   background-color: #f5f5f5;
   border-color: #ddd;
@@ -391,5 +418,5 @@ textarea {
   th {
     vertical-align: middle;
     padding: 5px 25px 5px 8px;
-  }  
+  }
 }

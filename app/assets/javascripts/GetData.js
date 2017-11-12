@@ -9,13 +9,10 @@ function getData(ports_parameters, url, location, ports_with_ranges) {
 
   // Create repeater for sending to and getting data from the server
   clearInterval(window.dataUpdateInterval);
-  window.dataUpdateInterval = setInterval(function() {
-                                            dataRequest(ports_parameters,
-                                                        null,
-                                                        url,
-                                                        location,
-                                                        ports);
-                                          }, 5000);
+  window.dataUpdateInterval = setInterval(
+    function() {
+      dataRequest(ports_parameters, null, url, location, ports);
+    }, 5000);
 }
 
 // Main function which listens buttons
@@ -109,13 +106,15 @@ function mapData(answer, location) {
       var accepted_for_danger_state = ['reed_switch',
                                        'motion_sensor',
                                        'temperature_sensor',
+                                       'pressure_sensor',
                                        'leak_sensor',
                                        'smoke_sensor',
                                        'connection_checker'].indexOf(type)
 
       var accepted_for_success_state = ['switch', 'arming_switch'].indexOf(type)
 
-      // Data for detailed page
+//========================= Data for detailed page =============================
+
       if (location == 'page') {
         var disabled = 'panel-default';
         var info = 'panel-info';
@@ -132,11 +131,38 @@ function mapData(answer, location) {
           }
         } else if (common_port != -1) {
           $('#port_' + id).text(p.text);
+        } else if (type == 'pressure_sensor') {
+          $('#port_' + id).text(p.text);
+        } else if (type == 'controller_raw_data') {
+          $('#port_' + id).empty();
+          var simpleHtml = "<div class='controller-raw-data-table'><table>" +
+                           "<thead><tr><th>" +
+                           p.ports_data[0].name +
+                           '</th><th>' +
+                           p.ports_data[0].state +
+                           '</th><th>' +
+                           p.ports_data[0].voltage +
+                           '</th></tr></thead><tbody>';
+          for (var z = 1; z < p.ports_data.length; z++) {
+            simpleHtml = simpleHtml +
+            '<tr><td>' +
+            p.ports_data[z].name +
+            "</td><td class='no-line-break'>" +
+            p.ports_data[z].state +
+            '</td><td>' +
+            p.ports_data[z].voltage +
+            '</td></tr>';
+          }
+
+          simpleHtml = simpleHtml + '</tbody></table></div>';
+          $('#port_' + id).html(simpleHtml);
         } else if (type == 'switch' || type == 'arming_switch') {
           $('#port_' + id).text(p.text);
           $('#button_text_' + id).text(p.button_text);
         } else if (type == 'temperature_chart') {
-          var a = MyChart(p.chart_data, id, p.text);
+          var a = MyChart(p.chart_data, id, p.text, p.axis_y_title);
+        } else if (type == 'voltage_chart') {
+          var a = MyChart(p.chart_data, id, p.text, p.axis_y_title);
         } else if (type == 'connection_checker') {
           $('#port_' + id).text(p.created_at);
         } else if (type == 'controller_log') {
@@ -176,7 +202,7 @@ function mapData(answer, location) {
           }
         }
 
-      // Data for main page
+//======================== Data for main page ==================================
       } else if (location == 'user_index') {
         var target = $('#' + p.location_id + '_' + id);
         var disabled = 'port-disabled';
@@ -202,6 +228,12 @@ function mapData(answer, location) {
                                                             p.created_at;
         } else if (type == 'controller_log') {
           var title = p.title;
+        } else if (type == 'controller_raw_data') {
+          var title = p.title;
+        } else if (type == 'voltage_chart') {
+          var title = p.title;
+        } else if (type == 'pressure_sensor') {
+          var title = p.text;
         }
 
         target.attr('data-original-title', title)
@@ -279,7 +311,7 @@ function mapData(answer, location) {
   }
 }
 
-function MyChart(answer, port_id, text) {
+function MyChart(answer, port_id, text, axis_y_title) {
 
   // Initialize variables for chart
   var margin = {top: 20, right: 20, bottom: 30, left: 50},
@@ -302,13 +334,13 @@ function MyChart(answer, port_id, text) {
 
   // Select right function
   if (!$('#svg_chart_' + port_id).length) {
-    createChart(answer);
+    createChart(answer, axis_y_title);
   } else {
     updateChart(answer);
   }
 
   // Function for creating chart
-  function createChart(raw_data) {
+  function createChart(raw_data, axis_y_title) {
 
     $("#port_" + port_id).empty();
 
@@ -349,7 +381,7 @@ function MyChart(answer, port_id, text) {
        .attr("y", 6)
        .attr("dy", ".71em")
        .style("text-anchor", "end")
-       .text("Temperature");
+       .text(axis_y_title);
     svg.append("path")
        .datum(data)
        .attr("class", "line")

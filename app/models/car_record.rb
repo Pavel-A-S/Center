@@ -1,3 +1,4 @@
+# Car Record
 class CarRecord < ActiveRecord::Base
   belongs_to :user
 
@@ -9,7 +10,7 @@ class CarRecord < ActiveRecord::Base
   validates :document_description, presence: true, length: { maximum: 1000 }
   validates :car_number, presence: true, length: { maximum: 100 }
   validates :car_model, presence: true, length: { maximum: 300 }
-  validates :cargo, length: { maximum: 10000 }
+  validates :cargo, length: { maximum: 10_000 }
   validates :initiator, length: { maximum: 500 }
   validates :description, length: { maximum: 1000 }
 end

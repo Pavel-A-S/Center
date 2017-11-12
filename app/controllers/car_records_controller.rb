@@ -1,22 +1,21 @@
+# Car records controller
 class CarRecordsController < ApplicationController
-  before_action :set_car_record, only: [:show, :edit, :update, :destroy]
-  before_action :must_be_security_or_administrator, except: [:destroy, :update,
-                                                                       :edit]
-  before_action :must_be_administrator, only: [:destroy, :update, :edit]
+  before_action :set_car_record, only: %i[show edit update destroy]
+  before_action :must_be_security_or_administrator,
+                except: %i[destroy update edit]
+  before_action :must_be_administrator, only: %i[destroy update edit]
 
   def index
     @car_records = CarRecord.order(created_at: :desc)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @car_record = CarRecord.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     data = car_record_params
@@ -54,22 +53,16 @@ class CarRecordsController < ApplicationController
   end
 
   private
-    def set_car_record
-      @car_record = CarRecord.find(params[:id])
-    end
 
-    def car_record_params
-      params.require(:car_record).permit(:date, :first_name,
-                                                :middle_name,
-                                                :last_name,
-                                                :initiator,
-                                                :document_type,
-                                                :document_number,
-                                                :date_of_issue,
-                                                :car_number,
-                                                :car_model,
-                                                :cargo,
-                                                :document_description,
-                                                :description)
-    end
+  def set_car_record
+    @car_record = CarRecord.find(params[:id])
+  end
+
+  def car_record_params
+    params.require(:car_record).permit(
+      :date, :first_name, :middle_name, :last_name, :initiator, :document_type,
+      :document_number, :date_of_issue, :car_number, :car_model, :cargo,
+      :document_description, :description
+    )
+  end
 end

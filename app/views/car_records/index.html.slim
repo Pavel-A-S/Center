@@ -42,8 +42,10 @@ br
             td
               = link_to t(:edit), edit_car_record_path(c)
             td
-              = link_to t(:delete), c, data: { confirm: t(:delete_confirmation) },
-                                        method: :delete
+              = link_to t(:delete),
+                        c,
+                        data: { confirm: t(:delete_confirmation) },
+                        method: :delete
 script
   |$('#order-table').dataTable({
   |        "aLengthMenu": [[25, 50, -1], [25, 50, "All"]],

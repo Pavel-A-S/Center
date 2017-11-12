@@ -48,7 +48,10 @@ br
           td
             = link_to t(:edit), edit_connection_path(connection)
           td
-            = link_to t(:delete), connection, data: { confirm: t(:delete_confirmation) }, method: :delete
+            = link_to t(:delete),
+                      connection,
+                      data: { confirm: t(:delete_confirmation) },
+                      method: :delete
 
 script
   |$('#order-table').dataTable({

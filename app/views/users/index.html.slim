@@ -32,9 +32,12 @@ br
           td
             = link_to t(:show), user
           td
-            = link_to t(:edit), edit_user_path(user) 
+            = link_to t(:edit), edit_user_path(user)
           td
-            = link_to t(:delete), user, method: :delete, data: { confirm: t(:delete_confirmation) }
+            = link_to t(:delete),
+                      user,
+                      method: :delete,
+                      data: { confirm: t(:delete_confirmation) }
 script
   |$('#order-table').dataTable({
   |        "aLengthMenu": [[25, 50, -1], [25, 50, "All"]],
@@ -42,10 +45,3 @@ script
   |        "order": [[0, 'desc']],
   |        "language": { "url": "#{root_url + '/assets/Russian.json'}" }
   |    }).animate({opacity: 1})
-
-
-
-
-
-
-

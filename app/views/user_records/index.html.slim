@@ -34,8 +34,10 @@ br
             td
               = link_to t(:edit), edit_user_record_path(u)
             td
-              = link_to t(:delete), u, data: { confirm: t(:delete_confirmation) },
-                                        method: :delete
+              = link_to t(:delete),
+                        u,
+                        data: { confirm: t(:delete_confirmation) },
+                        method: :delete
 script
   |$('#order-table').dataTable({
   |        "aLengthMenu": [[25, 50, -1], [25, 50, "All"]],

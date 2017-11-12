@@ -4,3 +4,5 @@
   == render 'form'
   br
   = link_to t(:back), ports_path
+script
+  | $('#port_type').on('change', function() { fieldsSwitcher(); });

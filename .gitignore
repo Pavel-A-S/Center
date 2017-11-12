@@ -18,3 +18,6 @@
 
 # Temp files
 *~
+
+# byebug
+.byebug_history

@@ -22,7 +22,9 @@
           .form-group
             = f.label :date, t(:car_record_date)
             br
-            = f.datetime_select :date, default: DateTime.now, class: "form-control"
+            = f.datetime_select :date,
+                                default: DateTime.now,
+                                class: "form-control"
           .form-group
             = f.label :description, t(:car_record_description)
             = f.text_area :description, class: "form-control", rows: '3'
@@ -51,9 +53,13 @@
           .form-group
             = f.label :date_of_issue, t(:car_record_date_of_issue)
             br
-            = f.date_select :date_of_issue, start_year: 1800, class: "form-control"
+            = f.date_select :date_of_issue,
+                            start_year: 1800,
+                            class: "form-control"
           .form-group
             = f.label :document_description, t(:car_record_document_description)
-            = f.text_area :document_description, class: "form-control", rows: '3'
+            = f.text_area :document_description,
+                          class: "form-control",
+                          rows: '3'
 
         = f.submit t(:confirm), class: 'btn btn-primary btn-lg'

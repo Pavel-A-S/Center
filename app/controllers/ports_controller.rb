@@ -1,19 +1,18 @@
+# Controller for ports
 class PortsController < ApplicationController
-  before_action :set_port, only: [:show, :edit, :update, :destroy]
+  before_action :set_port, only: %i[show edit update destroy]
   before_action :must_be_administrator
   def index
     @ports = Port.order(location_id: :desc)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @port = Port.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @port = Port.new(port_params)
@@ -47,20 +46,16 @@ class PortsController < ApplicationController
   end
 
   private
-    def set_port
-      @port = Port.find(params[:id])
-    end
 
-    def port_params
-      params.require(:port).permit(:name, :order_index, :port_number,
-                                                        :port_type,
-                                                        :location_id,
-                                                        :connection_id,
-                                                        :icon,
-                                                        :description,
-                                                        :access,
-                                                        :before_warning,
-                                                        :before_alert,
-                                                        :state)
-    end
+  def set_port
+    @port = Port.find(params[:id])
+  end
+
+  def port_params
+    params.require(:port).permit(
+      :name, :order_index, :port_type, :port_number, :extra_port_number,
+      :location_id, :connection_id, :icon, :description, :access,
+      :before_warning, :before_alert, :state
+    )
+  end
 end

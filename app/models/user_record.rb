@@ -1,3 +1,4 @@
+# User record
 class UserRecord < ActiveRecord::Base
   belongs_to :user
 
@@ -9,5 +10,4 @@ class UserRecord < ActiveRecord::Base
   validates :document_description, presence: true, length: { maximum: 1000 }
   validates :initiator, length: { maximum: 500 }
   validates :description, length: { maximum: 1000 }
-
 end

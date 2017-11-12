@@ -1,13 +1,13 @@
+# Locations controller
 class LocationsController < ApplicationController
-  before_action :set_location, only: [:show, :edit, :update, :destroy, :page]
-  before_action :must_be_administrator, except: [:user_index, :page]
+  before_action :set_location, only: %i[show edit update destroy page]
+  before_action :must_be_administrator, except: %i[user_index page]
 
   def index
     @locations = Location.order(created_at: :desc)
   end
 
   def user_index
-
     # Select locations according to rights
     if current_user.administrator?
       @locations = Location.all
@@ -19,38 +19,36 @@ class LocationsController < ApplicationController
     end
 
     @ports_ids = Port.where(location_id: @locations).pluck(:id) if @locations
-
   end
 
-  def show
-  end
+  def show; end
 
   def page
-    if @location
+    return unless @location
 
-      # Select locations according to rights
-      if current_user.administrator?
-        @ports = @location.ports.order(:order_index)
-      elsif current_user.engineer? || current_user.security?
-        @access_value = User.roles[current_user.role]
-        @ports = @location.ports.where(access: @access_value)
-                                .order(:order_index)
-      end
-
-      @ports_ids = @ports.map { |p| p.id }
-      @accepted_ports = [Port.port_types['temperature_chart'],
-                         Port.port_types['controller_log']]
-      @ports_with_ranges = @ports.where(port_type: @accepted_ports)
-                                 .pluck(:id, :port_type)
+    # Select locations according to rights
+    if current_user.administrator?
+      @ports = @location.ports.order(:order_index)
+    elsif current_user.engineer? || current_user.security?
+      @access_value = User.roles[current_user.role]
+      @ports = @location.ports
+                        .where(access: @access_value)
+                        .order(:order_index)
     end
+
+    @ports_ids = @ports.map(&:id)
+    @accepted_ports = [Port.port_types['temperature_chart'],
+                       Port.port_types['voltage_chart'],
+                       Port.port_types['controller_log']]
+    @ports_with_ranges = @ports.where(port_type: @accepted_ports)
+                               .pluck(:id, :port_type)
   end
 
   def new
     @location = Location.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @location = Location.new(location_params)
@@ -84,11 +82,12 @@ class LocationsController < ApplicationController
   end
 
   private
-    def set_location
-      @location = Location.find(params[:id])
-    end
 
-    def location_params
-      params.require(:location).permit(:name, :description, :access)
-    end
+  def set_location
+    @location = Location.find(params[:id])
+  end
+
+  def location_params
+    params.require(:location).permit(:name, :description, :access)
+  end
 end

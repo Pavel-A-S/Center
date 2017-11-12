@@ -1,20 +1,19 @@
+# Connections controller
 class ConnectionsController < ApplicationController
-  before_action :set_connection, only: [:show, :edit, :update, :destroy]
+  before_action :set_connection, only: %i[show edit update destroy]
   before_action :must_be_administrator
 
   def index
     @connections = Connection.all
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @connection = Connection.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @connection = Connection.new(connection_params)
@@ -48,15 +47,15 @@ class ConnectionsController < ApplicationController
   end
 
   private
-    def set_connection
-      @connection = Connection.find(params[:id])
-    end
 
-    def connection_params
-      params.require(:connection).permit(:name, :login, :password, :identifier,
-                                                                   :description,
-                                                                   :frequency,
-                                                                   :time_out,
-                                                                   :update_me)
-    end
+  def set_connection
+    @connection = Connection.find(params[:id])
+  end
+
+  def connection_params
+    params.require(:connection).permit(
+      :name, :login, :password, :identifier, :description, :frequency,
+      :time_out, :update_me
+    )
+  end
 end

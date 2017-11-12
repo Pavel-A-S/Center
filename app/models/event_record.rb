@@ -1,3 +1,4 @@
+# Event record
 class EventRecord < ActiveRecord::Base
   belongs_to :user
 

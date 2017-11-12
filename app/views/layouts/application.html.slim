@@ -5,11 +5,14 @@ html lang="en"
     meta charset="utf-8"
     meta http-equiv="X-UA-Compatible" content="IE=edge"
     meta name="viewport" content="width=device-width, initial-scale=1"
-    / The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags
+    / The above 3 meta tags *must* come first in the head;
+    / any other head content must come *after* these tags
     meta name="turbolinks-cache-control" content="no-cache"
     title
       = t(:brand)
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = stylesheet_link_tag 'application',
+                          media: 'all',
+                          'data-turbolinks-track' => true
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
 
@@ -17,7 +20,13 @@ html lang="en"
     nav class="navbar no-rounded-corners navbar-inverse navbar-fixed-top"
       div class="container-fluid"
         div class="navbar-header"
-          button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false"
+          button[
+            type="button"
+            class="navbar-toggle collapsed"
+            data-toggle="collapse"
+            data-target="#bs-example-navbar-collapse-1"
+            aria-expanded="false"
+          ]
             span class="sr-only"
               | Toggle navigation
             span class="icon-bar"
@@ -30,7 +39,14 @@ html lang="en"
             - if user_signed_in?
               - if current_user.administrator?
                 li class="dropdown"
-                  a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                  a[
+                    href="#"
+                    class="dropdown-toggle"
+                    data-toggle="dropdown"
+                    role="button"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ]
                     = t(:settings)
                     span class="caret"
                   ul class="dropdown-menu"
@@ -72,8 +88,9 @@ html lang="en"
               - ending = "danger"
             - else
               - ending = "success"
-            = content_tag :div, class: "alert alert-#{ending} alert-dismissable",
-                                role: "alert" do
+            = content_tag :div,
+                          class: "alert alert-#{ending} alert-dismissable",
+                          role: "alert" do
               button.close type="button" data-dismiss="alert"
                 span aria-hidden="true"
                   | &times;
@@ -92,14 +109,18 @@ html lang="en"
       div class='footer-created-by'
         | Created by profy 2016
 
-
-
 script
   | $(document).ready(function(){
   |  setTimeout(function(){
   |    $('#flash').hide();
   |  }, 5000);
   | });
-  | $(document).ready(function(){ siren('#{siren_path}', '#{t(:siren_on)}', '#{audio_tag("siren.mp3", autoplay: true, loop: true)}');});
-
-
+  | $(document).ready(
+  |   function(){
+  |     siren(
+  |       '#{siren_path}',
+  |       '#{t(:siren_on)}',
+  |       '#{audio_tag("siren.mp3", autoplay: true, loop: true)}'
+  |     );
+  |    }
+  | );

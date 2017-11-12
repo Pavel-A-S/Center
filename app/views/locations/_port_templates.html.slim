@@ -1,7 +1,6 @@
 - if ports
   - ports.each do |p|
-    - if ['temperature_sensor', 'reed_switch', 'motion_sensor', 'leak_sensor',
-          'connection_checker', 'smoke_sensor'].include?(p.port_type)
+    - if p.port_type_1?
       div class="plate"
         div class="panel panel-danger"
           div class="panel-heading"
@@ -9,7 +8,7 @@
               = p.name
           div class="panel-body" id="port_#{p.id}"
             | no data
-    - if p.port_type == 'switch' || p.port_type == 'arming_switch'
+    - if p.port_type_2?
       div class="plate"
         div class="panel panel-danger"
           div class="panel-heading"
@@ -23,7 +22,7 @@
               | no data
           br
           br
-    - if p.port_type == 'temperature_chart'
+    - if p.temperature_chart? || p.voltage_chart?
       br
       div class="chart-plate"
         div class="panel panel-danger"
@@ -43,6 +42,11 @@
             | no data
 
 
-
-
-
+    - if p.controller_raw_data?
+      div class="controller-raw-data-plate"
+        div class="panel panel-danger"
+          div class="panel-heading"
+            h3 class="panel-title"
+              = p.name
+          div class="panel-body" id="port_#{p.id}"
+            | no data

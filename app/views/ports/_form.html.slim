@@ -13,16 +13,23 @@
       = f.label :order_index, t(:port_order)
       = f.number_field :order_index, class: 'form-control'
     .form-group
-      = f.label :port_number, t(:port_number)
-      = f.select :port_number, Port.port_numbers.keys                          \
-                                    .map{ |number| [number, number] }, {},
-                                { class: 'form-control' }
-    .form-group
       = f.label :port_type, t(:port_type)
-      = f.select :port_type, Port.port_types.keys                              \
-                                  .map{ |t| [t("#{t}"), t] },
-                                  {},
-                                  { class: 'form-control' }
+      = f.select :port_type,
+                 Port.port_types.keys.map{ |t| [t("#{t}.name"), t] },
+                 {},
+                 { class: 'form-control', id: 'port_type' }
+    .form-group
+      = f.label :port_number, t(:port_number)
+      = f.select :port_number,
+                 Port.port_numbers.keys.map{ |number| [number, number] },
+                 {},
+                 { class: 'form-control' }
+    .form-group
+      = f.label :extra_port_number, t(:extra_port_number)
+      = f.select :extra_port_number,
+                 Port.extra_port_numbers.keys.map{ |number| [number, number] },
+                 {},
+                 { class: 'form-control', id: 'extra_port', disabled: true }
     .form-group
       = f.label :location_id, t(:port_location)
       = f.select :location_id, Location.all.collect { |l| [l.name, l.id] },

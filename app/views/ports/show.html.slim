@@ -24,10 +24,16 @@
           = @port.port_number
         br
         dt
+          = t(:extra_port_number)
+        br
+        dd
+          = @port.extra_port_number
+        br
+        dt
           = t(:port_type)
         br
         dd
-          = t("#{@port.port_type}") if @port.port_type
+          = t("#{@port.port_type}.name") if @port.port_type
         br
         dt
           = t(:port_location)
@@ -83,4 +89,3 @@
         = ' | '
         = link_to t(:delete), @port, data: { confirm: t(:delete_confirmation) },
                                     method: :delete
-

@@ -28,7 +28,10 @@ br
           td
             = link_to t(:edit), edit_location_path(location)
           td
-            = link_to t(:delete), location, data: { confirm: t(:delete_confirmation) }, method: :delete
+            = link_to t(:delete),
+                      location,
+                      data: { confirm: t(:delete_confirmation) },
+                      method: :delete
 script
   |$('#order-table').dataTable({
   |        "aLengthMenu": [[25, 50, -1], [25, 50, "All"]],

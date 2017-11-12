@@ -22,7 +22,9 @@
           .form-group
             = f.label :date, t(:user_record_date)
             br
-            = f.datetime_select :date, default: DateTime.now, class: "form-control"
+            = f.datetime_select :date,
+                                default: DateTime.now,
+                                class: "form-control"
           .form-group
             = f.label :initiator, t(:user_record_initiator)
             = f.text_field :initiator, class: "form-control"
@@ -37,10 +39,15 @@
           .form-group
             = f.label :date_of_issue, t(:user_record_date_of_issue)
             br
-            = f.date_select :date_of_issue, start_year: 1800, class: "form-control"
+            = f.date_select :date_of_issue,
+                            start_year: 1800,
+                            class: "form-control"
           .form-group
-            = f.label :document_description, t(:user_record_document_description)
-            = f.text_area :document_description, class: "form-control", rows: '5'
+            = f.label :document_description,
+                      t(:user_record_document_description)
+            = f.text_area :document_description,
+                          class: "form-control",
+                          rows: '5'
       div class='col-md-4'
         div class='well user_well'
           .form-group

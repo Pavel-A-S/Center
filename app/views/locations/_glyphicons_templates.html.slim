@@ -1,55 +1,107 @@
 - if port
   - if port.door?
-
-    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip'
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+    ]
       span.glyphicon.glyphicon-log-in
 
   - if port.eye?
-
-    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip'
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+    ]
       span.glyphicon.glyphicon-eye-open
 
   - if port.siren?
-
-    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip'
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+    ]
       span.glyphicon.glyphicon-volume-up
 
   - if port.chart?
-
-    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip'
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+    ]
       span.glyphicon.glyphicon-blackboard
 
   - if port.temperature?
-
-    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip' data-html='true'
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+      data-html='true'
+    ]
       span.glyphicon.glyphicon-dashboard
 
   - if port.water?
-
-    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip'
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+    ]
       span.glyphicon.glyphicon-tint
 
   - if port.signal?
-
-    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip' data-html='true' data-last-connection="#{t(:last_connection)}"
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+      data-html='true'
+      data-last-connection="#{t(:last_connection)}"
+    ]
       span.glyphicon.glyphicon-signal
 
   - if port.fire?
-
-    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip'
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+    ]
       span.glyphicon.glyphicon-fire
 
   - if port.electricity?
-
-    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip'
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+    ]
       span.glyphicon.glyphicon-flash
 
   - if port.door_lock?
-
-    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip'
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+    ]
       span.glyphicon.glyphicon-lock
 
   - if port.controller_log?
-
-    div class="port_picture_wrapper alert alert-danger" id="#{port.location_id}_#{port.id}" data-toggle='tooltip'
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+    ]
       span.glyphicon.glyphicon-list-alt
+
+  - if port.pressure?
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+    ]
+      span.glyphicon.glyphicon-scale
+
+  - if port.wrench?
+    div[
+      class="port_picture_wrapper alert alert-danger"
+      id="#{port.location_id}_#{port.id}"
+      data-toggle='tooltip'
+    ]
+      span.glyphicon.glyphicon-wrench

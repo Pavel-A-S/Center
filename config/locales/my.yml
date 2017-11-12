@@ -76,6 +76,7 @@ ru:
   port_name: "Название"
   port_order: "Приоритет отображения"
   port_number: "Номер порта"
+  extra_port_number: "Номер дополнительного порта"
   port_type: "Тип порта"
   port_location: "Отображать в"
   port_connection: "Соединение"
@@ -106,6 +107,9 @@ ru:
   arm_on: "Поставить на охрану"
   arm_off: " Снять с охраны"
   port_disabled: "Порт отключён"
+  norm: "Давление в норме"
+  above_the_norm: "Давление выше нормы"
+  below_the_norm: "Давление ниже нормы"
   # Ports - controller
   port_was_created: "Порт был создан"
   port_was_updated: "Порт был обновлён"
@@ -137,16 +141,37 @@ ru:
   engineer: "Инженеры"
   administrator: "Администраторы"
   # Sensors
-  reed_switch: "Геркон"
-  motion_sensor: "Датчик движения"
-  temperature_sensor: "Термометр"
-  leak_sensor: "Датчик протечки"
-  switch: "Переключатель"
-  arming_switch: "Постановка на охрану"
-  temperature_chart: "График температуры"
-  connection_checker: "Проверка связи"
-  smoke_sensor: "Датчик дыма"
-  controller_log: "Журнал оборудования"
+  reed_switch:
+    name: "Геркон"
+  motion_sensor:
+    name: "Датчик движения"
+  temperature_sensor:
+    name: "Термометр"
+  leak_sensor:
+    name: "Датчик протечки"
+  switch:
+    name: "Переключатель"
+  arming_switch:
+    name: "Постановка на охрану"
+  temperature_chart:
+    name: "График температуры"
+    axis_y_title: "Температура"
+  connection_checker:
+    name: "Проверка связи"
+  smoke_sensor:
+    name: "Датчик дыма"
+  controller_log:
+    name: "Журнал оборудования"
+  pressure_sensor:
+    name: "Датчик давления"
+  voltage_chart:
+    name: "График напряжения"
+    axis_y_title: "Напряжение"
+  controller_raw_data:
+    name: "Состояние портов контроллера"
+    port: "Порт"
+    state: "Состояние"
+    voltage: "Напряжение (V)"
   # Icons
   door: "Дверь"
   eye: "Глаз"
@@ -159,6 +184,8 @@ ru:
   electricity: "Электричество"
   door_lock: "Замок"
   journal: "Журнал"
+  pressure: "Давление"
+  wrench: "Гаечный ключ"
   # Event records
   event_record: "Событие"
   event_records: "События"
@@ -239,8 +266,12 @@ ru:
   partition_arm_off: "Снятие с охраны. Периметр "
   input_alert: "Тревога: "
   input_passive: "Отмена тревоги: "
+  no_accepted_ports: "Получены технические данные"
   open_case: "Крышка устройства открыта."
   device_on: "Устройство включено."
+  device_was_restarted: "Устройство перезапущено."
+  profile_was_applied: "Применён профиль № "
+  power_was_recovered: "Питание восстановлено."
   test_message_from_device: "Получено тестовое сообщение от устройства."
   #
   last_connection: "Данные получены: "
@@ -325,6 +356,7 @@ en:
   port_name: "Name"
   port_order: "Display priority"
   port_number: "Port number"
+  extra_port_number: "Extra port number"
   port_type: "Port type"
   port_location: "Location"
   port_connection: "Connection"
@@ -355,6 +387,9 @@ en:
   arm_on: "Arm"
   arm_off: "Disarm"
   port_disabled: "Port disabled"
+  norm: "The pressure in the norm"
+  above_the_norm: "The pressure above the norm"
+  below_the_norm: "The pressure below the norm"
   # Ports - controller
   port_was_created: "Port was successfully created."
   port_was_updated: "Port was successfully updated."
@@ -386,16 +421,37 @@ en:
   engineer: "Engineers"
   administrator: "Administrators"
   # Sensors
-  reed_switch: "Reed switch"
-  motion_sensor: "Motion sensor"
-  temperature_sensor: "Temperature sensor"
-  leak_sensor: "Leak sensor"
-  switch: "Switch"
-  arming_switch: "Arming switch"
-  temperature_chart: "Temperature chart"
-  connection_checker: "Connection checker"
-  smoke_sensor: "Smoke sensor"
-  controller_log: "Controller log"
+  reed_switch:
+    name: "Reed switch"
+  motion_sensor:
+    name: "Motion sensor"
+  temperature_sensor:
+    name: "Temperature sensor"
+  leak_sensor:
+    name: "Leak sensor"
+  switch:
+    name: "Switch"
+  arming_switch:
+    name: "Arming switch"
+  temperature_chart:
+    name: "Temperature chart"
+    axis_y_title: "Temperature"
+  connection_checker:
+    name: "Connection checker"
+  smoke_sensor:
+    name: "Smoke sensor"
+  controller_log:
+    name: "Controller log"
+  pressure_sensor:
+    name: "Pressure sensor"
+  voltage_chart:
+    name: "Voltage chart"
+    axis_y_title: "Voltage"
+  controller_raw_data:
+    name: "Controller raw data"
+    port: "Port"
+    state: "State"
+    voltage: "Voltage (V)"
   # Icons
   door: "Door"
   eye: "Eye"
@@ -408,6 +464,8 @@ en:
   electricity: "Electricity"
   door_lock: "Lock"
   journal: "Journal"
+  pressure: "Pressure"
+  wrench: "Wrench"
   # Event records
   event_record: "Event"
   event_records: "Events"
@@ -488,8 +546,12 @@ en:
   partition_arm_off: "Disarming, partition "
   input_alert: "Alert: "
   input_passive: "Alert was canceled: "
+  no_accepted_ports: "No accepted ports"
   open_case: "Device case is opened."
   device_on: "Device on."
+  device_was_restarted: "Device was restared."
+  profile_was_applied: "Profile was applied. № "
+  power_was_recovered: "Power was recovered."
   test_message_from_device: "Test message from device has been received."
   #
   last_connection: "Last connection: "
